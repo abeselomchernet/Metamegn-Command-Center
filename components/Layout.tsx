@@ -1,177 +1,203 @@
 import React, { useState } from 'react';
-import { LayoutDashboard, Store, PieChart, Users, Settings, LogOut, Menu, X, ShieldCheck, Smartphone, Landmark } from 'lucide-react';
+import {
+  FileText,
+  GitCompare,
+  Store,
+  Layers,
+  BarChart3,
+  Users2,
+  Info,
+  Menu,
+  X,
+} from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useRole } from '../context/RoleContext';
-import { EmployeeRole } from '../types';
+import { Role, ROLE_LABELS } from '../src/domain/permissions';
+import { DemoBanner, DisclaimerFooter } from '../src/ui/UniversalNotice';
+import { RoleSwitcher } from '../src/ui/RoleSwitcher';
+import { EvidenceChip } from '../src/ui/EvidenceChip';
+import { useTranslation } from '../src/i18n/I18nContext';
+import { Locale } from '../src/i18n/types';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const { role, setRole } = useRole();
+  const { role, hasPerm } = useRole();
+  const { locale, setLocale, t } = useTranslation();
 
-  // Define menu items with required permissions
-  const allMenuItems = [
-    { 
-      icon: LayoutDashboard, 
-      label: 'Dashboard', 
-      subLabel: 'ዳሽቦርድ', 
-      path: role === EmployeeRole.SUPERVISOR ? '/supervisor' : '/',
-      allowed: [EmployeeRole.MANAGER, EmployeeRole.SUPERVISOR]
+  const navItems = [
+    {
+      to: '/reconcile',
+      label: t.navReconciliation,
+      icon: GitCompare,
+      show: hasPerm('reconciliation:view'),
+      badge: 'Core',
     },
-    { 
-      icon: Store, 
-      label: 'Tills', 
-      subLabel: 'መዝገቦች', 
-      path: '/tills',
-      allowed: [EmployeeRole.MANAGER, EmployeeRole.SUPERVISOR]
+    {
+      to: '/ledger',
+      label: t.navLedger,
+      icon: FileText,
+      show: true,
     },
-    { 
-      icon: Landmark, 
-      label: 'Settlements', 
-      subLabel: 'የባንክ ገቢ', 
-      path: '/settlements',
-      allowed: [EmployeeRole.MANAGER]
+    {
+      to: '/pos',
+      label: t.navPOS,
+      icon: Store,
+      show: true,
+      highlight: true,
     },
-    { 
-      icon: PieChart, 
-      label: 'Reports', 
-      subLabel: 'ሪፖርቶች', 
-      path: '/reports',
-      allowed: [EmployeeRole.MANAGER]
+    {
+      to: '/shifts',
+      label: t.navShifts,
+      icon: Layers,
+      show: hasPerm('shifts:count'),
     },
-    { 
-      icon: Users, 
-      label: 'Employees', 
-      subLabel: 'ሰራተኞች', 
-      path: '/employees',
-      allowed: [EmployeeRole.MANAGER]
+    {
+      to: '/reports',
+      label: t.navReports,
+      icon: BarChart3,
+      show: hasPerm('reports:view'),
     },
-    { 
-      icon: Settings, 
-      label: 'Settings', 
-      subLabel: 'ማስተካከያ', 
-      path: '/settings',
-      allowed: [EmployeeRole.MANAGER]
+    {
+      to: '/staff',
+      label: t.navStaff,
+      icon: Users2,
+      show: hasPerm('staff:view'),
+    },
+    {
+      to: '/about',
+      label: t.navAbout,
+      icon: Info,
+      show: true,
     },
   ];
 
-  const menuItems = allMenuItems.filter(item => item.allowed.includes(role));
-
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden font-sans">
-      {/* Sidebar for Desktop */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-64 bg-slate-900 text-white transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="flex items-center justify-between p-4 border-b border-slate-700">
-          <div className="flex items-center space-x-2">
-            <div className={`p-1.5 rounded-lg ${role === EmployeeRole.MANAGER ? 'bg-brand-green' : 'bg-blue-600'}`}>
-                <ShieldCheck className="w-6 h-6 text-white" />
-            </div>
-            <div>
-                <h1 className="text-xl font-bold font-ethiopic">Metamegn</h1>
-                <p className="text-xs text-slate-400">{role === EmployeeRole.MANAGER ? 'Admin' : 'Supervisor'}</p>
-            </div>
-          </div>
-          <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden text-slate-400 hover:text-white">
-            <X size={24} />
-          </button>
-        </div>
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans">
+      {/* 1. Permanent Top Demo Banner on EVERY route */}
+      <DemoBanner />
 
-        <nav className="flex-1 overflow-y-auto py-4">
-          <ul className="space-y-1 px-2">
-            {menuItems.map((item) => {
-              const isActive = location.pathname === item.path;
-              return (
-                <li key={item.path}>
-                  <Link
-                    to={item.path}
-                    className={`flex items-center px-4 py-3 rounded-lg transition-colors group ${
-                      isActive 
-                        ? 'bg-slate-800 text-white border-l-4 border-brand-green' 
-                        : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+      {/* 2. Top Navigation Bar adhering to Top Bar Contract */}
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 gap-4">
+            {/* Zone 1: Brand Wordmark (Single Text Element) */}
+            <div className="flex items-center gap-3 shrink-0">
+              <Link to="/reconcile" className="flex items-center gap-2 group">
+                <span className="text-lg font-bold tracking-tight text-slate-900 group-hover:text-slate-700 transition-colors whitespace-nowrap">
+                  Metamegn <span className="font-normal text-slate-400 font-ethiopic text-sm">(መተማመኛ)</span>
+                </span>
+              </Link>
+              <EvidenceChip status="Sample data" detail="UI illustration" className="hidden sm:inline-flex" />
+            </div>
+
+            {/* Zone 2: Navigation Links (single-line, clean unboxed text) */}
+            <nav className="hidden lg:flex items-center gap-1 xl:gap-2 text-xs font-medium text-slate-600">
+              {navItems
+                .filter((item) => item.show)
+                .map((item) => {
+                  const isActive = location.pathname === item.to || (item.to === '/reconcile' && location.pathname === '/');
+                  return (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      className={`px-3 py-1.5 rounded-md transition-colors whitespace-nowrap flex items-center gap-1.5 ${
+                        isActive
+                          ? 'bg-slate-100 text-slate-900 font-semibold'
+                          : 'hover:text-slate-900 hover:bg-slate-50'
+                      }`}
+                    >
+                      <item.icon size={14} className={isActive ? 'text-slate-900' : 'text-slate-400'} />
+                      <span>{item.label}</span>
+                      {item.badge && (
+                        <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1 py-0.2 rounded font-semibold">
+                          {item.badge}
+                        </span>
+                      )}
+                    </Link>
+                  );
+                })}
+            </nav>
+
+            {/* Zone 3: Controls (Role Switcher + Locale Selector + Mobile Menu Trigger) */}
+            <div className="flex items-center gap-2.5 shrink-0">
+              {/* Language Selector */}
+              <div className="flex items-center bg-slate-100 border border-slate-200 rounded-lg p-0.5 text-xs">
+                {(['en', 'am', 'om'] as Locale[]).map((loc) => (
+                  <button
+                    key={loc}
+                    onClick={() => setLocale(loc)}
+                    className={`px-2 py-1 rounded text-[11px] font-medium transition-colors ${
+                      locale === loc
+                        ? 'bg-white text-slate-900 shadow-xs font-bold'
+                        : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
-                    <item.icon size={20} className={`mr-3 ${isActive ? 'text-brand-green' : 'text-slate-400 group-hover:text-white'}`} />
-                    <div>
-                      <span className="block font-medium">{item.label}</span>
-                      <span className="text-xs opacity-70 font-ethiopic">{item.subLabel}</span>
-                    </div>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+                    {loc === 'en' ? 'EN' : loc === 'am' ? 'አማ' : 'ORO'}
+                  </button>
+                ))}
+              </div>
 
-        {/* Role Switcher for Demo */}
-        <div className="p-4 bg-slate-800 m-2 rounded-xl border border-slate-700">
-            <p className="text-xs text-slate-400 mb-2 uppercase font-bold tracking-wider">Simulate Role</p>
-            <div className="flex gap-2">
-                <button 
-                    onClick={() => setRole(EmployeeRole.MANAGER)}
-                    className={`flex-1 py-1 text-xs font-bold rounded ${role === EmployeeRole.MANAGER ? 'bg-brand-green text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
-                >
-                    Manager
-                </button>
-                <button 
-                    onClick={() => setRole(EmployeeRole.SUPERVISOR)}
-                    className={`flex-1 py-1 text-xs font-bold rounded ${role === EmployeeRole.SUPERVISOR ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
-                >
-                    Supervisor
-                </button>
-            </div>
-        </div>
+              {/* Demo Role Switcher */}
+              <div className="hidden sm:block">
+                <RoleSwitcher />
+              </div>
 
-        <div className="p-4 border-t border-slate-700 space-y-2">
-           <Link to="/employee" className="flex items-center w-full px-4 py-3 bg-slate-800 text-brand-green hover:bg-slate-700 hover:text-white rounded-lg transition-colors border border-slate-700">
-            <Smartphone size={20} className="mr-3" />
-            <div>
-                <span className="block font-medium text-sm">Switch to Employee</span>
-                <span className="text-xs opacity-70">POS View</span>
-            </div>
-          </Link>
-          <button className="flex items-center w-full px-4 py-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">
-            <LogOut size={20} className="mr-3" />
-            <span>Logout</span>
-          </button>
-        </div>
-      </aside>
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col h-screen overflow-hidden">
-        {/* Header */}
-        <header className="bg-white border-b border-slate-200 h-16 flex items-center justify-between px-4 lg:px-8">
-          <button onClick={() => setIsSidebarOpen(true)} className="lg:hidden text-slate-500 hover:text-slate-700">
-            <Menu size={24} />
-          </button>
-          
-          <div className="flex items-center space-x-4 ml-auto">
-            <div className="flex flex-col items-end mr-2">
-                <span className="text-sm font-semibold text-slate-800">Kaldis Coffee</span>
-                <span className="text-xs text-slate-500">Bole Branch</span>
-            </div>
-            <div className={`h-8 w-8 rounded-full flex items-center justify-center text-white font-bold ${role === EmployeeRole.MANAGER ? 'bg-brand-green' : 'bg-blue-600'}`}>
-                {role === EmployeeRole.MANAGER ? 'M' : 'S'}
+              {/* Mobile menu button */}
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="lg:hidden p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg"
+                aria-label="Toggle navigation menu"
+              >
+                {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
             </div>
           </div>
-        </header>
+        </div>
 
-        {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-4 lg:p-8">
-          {children}
-        </main>
-      </div>
-      
-      {/* Overlay for mobile sidebar */}
-      {isSidebarOpen && (
-        <div 
-            className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-            onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
+        {/* Mobile Navigation Drawer */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden border-t border-slate-200 bg-white px-4 pt-2 pb-4 space-y-2 shadow-lg">
+            <div className="py-2 border-b border-slate-100 sm:hidden">
+              <RoleSwitcher />
+            </div>
+            <div className="grid grid-cols-2 gap-1 pt-2">
+              {navItems
+                .filter((item) => item.show)
+                .map((item) => {
+                  const isActive = location.pathname === item.to || (item.to === '/reconcile' && location.pathname === '/');
+                  return (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`flex items-center gap-2 p-2.5 rounded-lg text-xs font-medium ${
+                        isActive
+                          ? 'bg-slate-900 text-white'
+                          : 'text-slate-700 hover:bg-slate-100'
+                      }`}
+                    >
+                      <item.icon size={16} />
+                      <span>{item.label}</span>
+                    </Link>
+                  );
+                })}
+            </div>
+          </div>
+        )}
+      </header>
+
+      {/* 3. Main Content Viewport */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {children}
+      </main>
+
+      {/* 4. Permanent Footer on EVERY route */}
+      <DisclaimerFooter />
     </div>
   );
 };

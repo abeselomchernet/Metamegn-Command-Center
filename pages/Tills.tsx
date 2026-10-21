@@ -1,158 +1,207 @@
 import React, { useState } from 'react';
-import { MOCK_TILLS } from '../constants';
-import { Till } from '../types';
-import { QrCode, MoreVertical, Smartphone, Printer, Circle, Plus, X, Check } from 'lucide-react';
+import { SEEDED_TILLS } from '../src/data/seededData';
+import { Till } from '../src/domain/types';
+import { EvidenceChip } from '../src/ui/EvidenceChip';
+import { useTranslation } from '../src/i18n/I18nContext';
+import { Store, QrCode, Plus, X, User, MapPin, Printer, CheckCircle } from 'lucide-react';
 
 export const Tills: React.FC = () => {
-  const [tills, setTills] = useState<Till[]>(MOCK_TILLS);
+  const { t } = useTranslation();
+  const [tills, setTills] = useState<Till[]>(SEEDED_TILLS);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newTill, setNewTill] = useState({ name: '', location: '', type: 'counter' });
+  const [newTillName, setNewTillName] = useState('');
+  const [newTillLocation, setNewTillLocation] = useState('');
+
+  // Sample QR modal
+  const [qrTill, setQrTill] = useState<Till | null>(null);
 
   const handleAddTill = (e: React.FormEvent) => {
-      e.preventDefault();
-      const till: Till = {
-          id: `TILL-00${tills.length + 1}`,
-          name: newTill.name,
-          location: newTill.location,
-          status: 'active',
-          daily_total: 0,
-          employee_name: 'Unassigned'
-      };
-      setTills([...tills, till]);
-      setIsModalOpen(false);
-      setNewTill({ name: '', location: '', type: 'counter' });
-  };
+    e.preventDefault();
+    if (!newTillName.trim()) return;
 
-  const handleGenerateQR = (tillName: string) => {
-      // Simulate generation
-      alert(`Generating ETHQR (Standard) for ${tillName}...\n\nSent to printer.`);
+    const created: Till = {
+      id: `till-0${tills.length + 1}`,
+      name: newTillName.trim(),
+      location: newTillLocation.trim() || 'Merchant Floor',
+      assignedCashierId: `emp-0${tills.length + 1}`,
+      assignedCashierName: 'Unassigned Cashier (Sample)',
+      active: true,
+    };
+
+    setTills([...tills, created]);
+    setIsModalOpen(false);
+    setNewTillName('');
+    setNewTillLocation('');
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 font-ethiopic">Manage Tills</h1>
-          <p className="text-slate-500 font-ethiopic">የሽያጭ መዝገቦች አስተዳደር</p>
+          <div className="flex items-center gap-2 mb-1">
+            <h1 className="text-xl font-bold tracking-tight text-slate-900">Registered Merchant Terminals & Tills</h1>
+            <EvidenceChip status="Sample data" detail="Terminal config" />
+          </div>
+          <p className="text-xs text-slate-500">
+            Physical and remote checkout points configured for acceptance event capture.
+          </p>
         </div>
-        <button 
-            onClick={() => setIsModalOpen(true)}
-            className="bg-brand-green hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium shadow-sm transition-colors flex items-center"
+
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="px-3.5 py-1.5 bg-slate-900 text-white text-xs font-semibold rounded-lg hover:bg-slate-800 flex items-center gap-1.5 transition-colors shadow-xs"
         >
-            <Plus size={20} className="mr-2" />
-            <span>Add New Till</span>
+          <Plus size={14} className="text-emerald-400" />
+          <span>Register New Till</span>
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {tills.map((till) => (
-          <div key={till.id} className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 relative group hover:border-brand-green transition-colors">
-             <button className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1 hover:bg-slate-100 rounded-full transition-colors">
-                <MoreVertical size={20} />
-             </button>
+          <div
+            key={till.id}
+            className="bg-white rounded-xl border border-slate-200 p-5 shadow-xs hover:border-slate-300 transition-colors space-y-4"
+          >
+            <div className="flex items-start justify-between">
+              <div>
+                <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">{till.id}</span>
+                <h3 className="text-sm font-bold text-slate-900 mt-0.5">{till.name}</h3>
+              </div>
+              <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                Active Terminal
+              </span>
+            </div>
 
-             <div className="flex items-center space-x-3 mb-4">
-                <div className="bg-slate-100 p-3 rounded-full">
-                    {till.name.toLowerCase().includes('window') || till.name.toLowerCase().includes('remote') 
-                        ? <Smartphone size={24} className="text-slate-600" /> 
-                        : <Printer size={24} className="text-slate-600" />
-                    }
-                </div>
-                <div>
-                    <h3 className="font-bold text-lg text-slate-900">{till.name}</h3>
-                    <div className="flex items-center text-xs text-slate-500">
-                        <Circle size={8} className={`mr-1 fill-current ${till.status === 'active' ? 'text-green-500' : 'text-slate-300'}`} />
-                        <span className="capitalize">{till.status}</span>
-                    </div>
-                </div>
-             </div>
+            <div className="space-y-2 text-xs border-t border-b border-slate-100 py-3">
+              <div className="flex items-center gap-2 text-slate-600">
+                <MapPin size={13} className="text-slate-400 shrink-0" />
+                <span>{till.location}</span>
+              </div>
+              <div className="flex items-center gap-2 text-slate-600">
+                <User size={13} className="text-slate-400 shrink-0" />
+                <span>{till.assignedCashierName}</span>
+              </div>
+            </div>
 
-             <div className="space-y-2 py-4 border-t border-b border-slate-50">
-                 <div className="flex justify-between text-sm">
-                     <span className="text-slate-500">Till ID:</span>
-                     <span className="font-mono text-slate-700 bg-slate-50 px-2 rounded">{till.id}</span>
-                 </div>
-                 <div className="flex justify-between text-sm">
-                     <span className="text-slate-500">Location:</span>
-                     <span className="text-slate-700">{till.location}</span>
-                 </div>
-                 <div className="flex justify-between text-sm">
-                     <span className="text-slate-500">Staff:</span>
-                     <span className={`text-sm ${till.employee_name === 'Unassigned' ? 'text-slate-400 italic' : 'text-slate-700 font-medium'}`}>
-                         {till.employee_name}
-                     </span>
-                 </div>
-             </div>
-
-             <div className="pt-4 flex flex-col space-y-2">
-                 <div className="flex justify-between items-end mb-2">
-                     <span className="text-xs text-slate-500 uppercase">Today's Total</span>
-                     <span className="text-xl font-bold text-slate-900">ETB {till.daily_total.toLocaleString()}</span>
-                 </div>
-                 <button 
-                    onClick={() => handleGenerateQR(till.name)}
-                    className="w-full border border-slate-200 hover:border-slate-300 text-slate-700 hover:bg-slate-50 py-2.5 rounded-lg text-sm font-medium flex items-center justify-center transition-colors active:bg-slate-100"
-                >
-                     <QrCode size={16} className="mr-2" />
-                     Generate QR / Print
-                 </button>
-             </div>
+            <div className="flex items-center gap-2 pt-1">
+              <button
+                onClick={() => setQrTill(till)}
+                className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-800 text-xs font-semibold rounded-lg border border-slate-200 flex items-center justify-center gap-1.5 transition-colors"
+              >
+                <QrCode size={14} />
+                <span>Interoperable QR Spec</span>
+              </button>
+            </div>
           </div>
         ))}
       </div>
 
-      {/* Add Till Modal */}
+      {/* Register New Till Modal */}
       {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
-            <div className="relative bg-white rounded-xl shadow-xl w-full max-w-md p-6 animate-in fade-in zoom-in duration-200">
-                <button 
-                    onClick={() => setIsModalOpen(false)}
-                    className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"
-                >
-                    <X size={24} />
-                </button>
-                
-                <h2 className="text-xl font-bold text-slate-900 mb-1">Add New Till</h2>
-                <p className="text-sm text-slate-500 mb-6">Create a new checkout point.</p>
-                
-                <form onSubmit={handleAddTill} className="space-y-4">
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Till Name</label>
-                        <input 
-                            type="text" 
-                            required
-                            value={newTill.name}
-                            onChange={(e) => setNewTill({...newTill, name: e.target.value})}
-                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-colors"
-                            placeholder="e.g. Counter 3 (በረንዳ)"
-                        />
-                    </div>
-                    
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Location / Branch</label>
-                        <input 
-                            type="text" 
-                            required
-                            value={newTill.location}
-                            onChange={(e) => setNewTill({...newTill, location: e.target.value})}
-                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-colors"
-                            placeholder="e.g. Bole Main Hall"
-                        />
-                    </div>
-
-                    <div className="pt-4">
-                        <button 
-                            type="submit"
-                            className="w-full bg-brand-green hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-green-900/10 transition-colors flex items-center justify-center"
-                        >
-                            <Plus size={20} className="mr-2" />
-                            Create Till
-                        </button>
-                    </div>
-                </form>
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl max-w-md w-full border border-slate-200 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <div className="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
+              <div>
+                <h3 className="font-bold text-slate-900 text-sm">Register New Terminal</h3>
+                <p className="text-xs text-slate-500">Assign a till point identifier</p>
+              </div>
+              <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+                <X size={16} />
+              </button>
             </div>
+
+            <form onSubmit={handleAddTill} className="p-5 space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Till Name</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Till 04 - Drive-thru Window"
+                  value={newTillName}
+                  onChange={(e) => setNewTillName(e.target.value)}
+                  className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-hidden focus:border-slate-900 text-slate-800"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Location / Zone</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Building B West Concourse"
+                  value={newTillLocation}
+                  onChange={(e) => setNewTillLocation(e.target.value)}
+                  className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-hidden focus:border-slate-900 text-slate-800"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-3 py-1.5 text-xs text-slate-600 hover:text-slate-900 rounded-lg"
+                >
+                  {t.cancel}
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-1.5 text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-lg"
+                >
+                  Create Terminal
+                </button>
+              </div>
+            </form>
           </div>
+        </div>
+      )}
+
+      {/* QR Spec Modal */}
+      {qrTill && (
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl max-w-sm w-full border border-slate-200 shadow-xl overflow-hidden p-6 text-center space-y-4">
+            <div className="flex justify-between items-center pb-2 border-b border-slate-100">
+              <span className="text-xs font-bold text-slate-900">{qrTill.name}</span>
+              <button onClick={() => setQrTill(null)} className="text-slate-400 hover:text-slate-600">
+                <X size={16} />
+              </button>
+            </div>
+
+            <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl inline-block">
+              {/* Simulated QR Pattern */}
+              <div className="w-40 h-40 bg-slate-900 rounded-lg p-2 flex flex-col justify-between items-center text-white text-[10px] font-mono">
+                <div className="flex justify-between w-full">
+                  <div className="w-8 h-8 bg-white rounded-xs p-1">
+                    <div className="w-full h-full bg-slate-900" />
+                  </div>
+                  <div className="w-8 h-8 bg-white rounded-xs p-1">
+                    <div className="w-full h-full bg-slate-900" />
+                  </div>
+                </div>
+                <div className="text-center font-bold tracking-widest text-[11px] text-emerald-400">
+                  SAMPLE QR
+                </div>
+                <div className="flex justify-between w-full items-end">
+                  <div className="w-8 h-8 bg-white rounded-xs p-1">
+                    <div className="w-full h-full bg-slate-900" />
+                  </div>
+                  <span className="text-[9px] text-slate-400">{qrTill.id}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-xs text-slate-500 leading-tight space-y-1">
+              <p className="font-semibold text-slate-800">Interoperable QR (Sample Specification)</p>
+              <p className="text-[11px]">Payload conforms to merchant static QR schema with embedded till identifier.</p>
+              <EvidenceChip status="Sample data" detail="QR payload" />
+            </div>
+
+            <button
+              onClick={() => setQrTill(null)}
+              className="w-full py-2 bg-slate-900 text-white rounded-lg text-xs font-semibold"
+            >
+              Done
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

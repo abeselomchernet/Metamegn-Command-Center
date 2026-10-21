@@ -1,190 +1,281 @@
 import React, { useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { Calendar, Download, Printer, TrendingUp, TrendingDown, DollarSign, CreditCard } from 'lucide-react';
-import { MOCK_CHART_DATA } from '../constants';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  LineChart,
+  Line,
+} from 'recharts';
+import { EvidenceChip } from '../src/ui/EvidenceChip';
+import { useTranslation } from '../src/i18n/I18nContext';
+import { formatETB } from '../src/domain/money';
+import { BarChart3, TrendingUp, AlertTriangle, Clock, Layers, Download } from 'lucide-react';
+
+const MATCH_RATE_TREND = [
+  { day: 'Mon', matchRate: 98.4, exceptions: 3 },
+  { day: 'Tue', matchRate: 96.1, exceptions: 7 },
+  { day: 'Wed', matchRate: 97.8, exceptions: 4 },
+  { day: 'Thu', matchRate: 95.2, exceptions: 9 },
+  { day: 'Fri', matchRate: 98.9, exceptions: 2 },
+  { day: 'Sat', matchRate: 94.7, exceptions: 11 },
+  { day: 'Sun', matchRate: 96.5, exceptions: 5 },
+];
+
+const RAIL_MIX_DATA = [
+  { name: 'Wallet Rail A', value: 38, amountCents: 4500000, color: '#3B82F6' },
+  { name: 'Bank Rail B', value: 27, amountCents: 3200000, color: '#10B981' },
+  { name: 'Interoperable QR', value: 18, amountCents: 2100000, color: '#8B5CF6' },
+  { name: 'Card Tap (SoftPOS)', value: 11, amountCents: 1300000, color: '#F59E0B' },
+  { name: 'Cash', value: 6, amountCents: 750000, color: '#64748B' },
+];
+
+const AGEING_BREAKDOWN = [
+  { range: '< 15 mins (Real-time)', count: 8, severity: 'nominal' },
+  { range: '15 - 60 mins', count: 4, severity: 'warning' },
+  { range: '1 - 4 hours', count: 2, severity: 'elevated' },
+  { range: '> 4 hours (SLA breach)', count: 1, severity: 'critical' },
+];
+
+const TILL_DISCREPANCIES = [
+  { till: 'Till 01 (Main Counter)', totalCaptured: 142, exceptions: 3, discrepancyRate: '2.1%' },
+  { till: 'Till 02 (Express Register)', totalCaptured: 198, exceptions: 6, discrepancyRate: '3.0%' },
+  { till: 'Till 03 (Patio / Bar)', totalCaptured: 87, exceptions: 4, discrepancyRate: '4.6%' },
+];
 
 export const Reports: React.FC = () => {
-  const [dateRange, setDateRange] = useState('weekly');
-
-  const PAYMENT_DATA = [
-    { name: 'Telebirr', value: 45000, color: '#3B82F6' }, // Blue
-    { name: 'M-Pesa', value: 25000, color: '#EF4444' },   // Red
-    { name: 'Cash', value: 15000, color: '#10B981' },     // Green
-    { name: 'Banks', value: 10000, color: '#8B5CF6' },    // Purple
-  ];
-
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-white p-3 border border-slate-200 shadow-lg rounded-lg">
-          <p className="text-xs text-slate-500 mb-1">{label}</p>
-          <p className="text-sm font-bold text-slate-900">
-            ETB {payload[0].value.toLocaleString()}
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
+  const { t } = useTranslation();
+  const [timeframe, setTimeframe] = useState('7d');
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      {/* 1. Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 font-ethiopic">Financial Reports / ሪፖርቶች</h1>
-          <p className="text-slate-500">Comprehensive sales analytics and tax reports.</p>
+          <div className="flex items-center gap-2 mb-1">
+            <h1 className="text-xl font-bold tracking-tight text-slate-900">{t.reportsTitle}</h1>
+            <EvidenceChip status="Sample data" detail="Aggregated metrics" />
+          </div>
+          <p className="text-xs text-slate-500">
+            Acceptance layer analytics: Match rate performance, discrepancy ageing, and payment rail distribution.
+          </p>
         </div>
-        <div className="flex gap-2">
-            <div className="flex items-center bg-white border border-slate-200 rounded-lg px-3 py-2 shadow-sm">
-                <Calendar size={16} className="text-slate-400 mr-2" />
-                <select 
-                    value={dateRange}
-                    onChange={(e) => setDateRange(e.target.value)}
-                    className="bg-transparent text-sm font-medium text-slate-700 focus:outline-none"
-                >
-                    <option value="daily">Today</option>
-                    <option value="weekly">This Week</option>
-                    <option value="monthly">This Month</option>
-                    <option value="yearly">This Year</option>
-                </select>
+
+        <div className="flex items-center gap-2">
+          <select
+            value={timeframe}
+            onChange={(e) => setTimeframe(e.target.value)}
+            className="px-3 py-1.5 text-xs bg-white border border-slate-200 rounded-lg text-slate-700 font-medium"
+          >
+            <option value="24h">Last 24 Hours</option>
+            <option value="7d">Last 7 Days (Sample)</option>
+            <option value="30d">Last 30 Days (Sample)</option>
+          </select>
+        </div>
+      </div>
+
+      {/* 2. Top Analytics Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Match Rate Trend */}
+        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-bold text-slate-900">7-Day Match Rate Trend</h2>
+              <p className="text-xs text-slate-500">Percentage of events matched within report SLA</p>
             </div>
-            <button className="flex items-center px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors shadow-sm">
-                <Download size={16} className="mr-2" /> Export PDF
-            </button>
+            <EvidenceChip status="Sample data" />
+          </div>
+
+          <div className="h-64 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={MATCH_RATE_TREND} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                <XAxis dataKey="day" stroke="#94a3b8" fontSize={11} />
+                <YAxis domain={[90, 100]} stroke="#94a3b8" fontSize={11} unit="%" />
+                <Tooltip
+                  content={({ active, payload }) => {
+                    if (active && payload && payload.length) {
+                      const data = payload[0].payload;
+                      return (
+                        <div className="bg-slate-900 text-white p-2.5 rounded-lg text-xs shadow-lg font-mono">
+                          <p className="font-sans font-bold text-slate-200">{data.day}</p>
+                          <p className="text-emerald-400">Match rate: {data.matchRate}%</p>
+                          <p className="text-slate-400">Open exceptions: {data.exceptions}</p>
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="matchRate"
+                  stroke="#10B981"
+                  strokeWidth={2.5}
+                  dot={{ r: 4, fill: '#10B981' }}
+                  activeDot={{ r: 6 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Payment Rail Mix */}
+        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-bold text-slate-900">{t.railMix}</h2>
+              <p className="text-xs text-slate-500">Volume share across neutral acceptance channels</p>
+            </div>
+            <EvidenceChip status="Sample data" />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+            <div className="sm:col-span-6 h-56">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={RAIL_MIX_DATA}
+                    innerRadius={55}
+                    outerRadius={80}
+                    paddingAngle={3}
+                    dataKey="value"
+                  >
+                    {RAIL_MIX_DATA.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    content={({ active, payload }) => {
+                      if (active && payload && payload.length) {
+                        const data = payload[0].payload;
+                        return (
+                          <div className="bg-slate-900 text-white p-2.5 rounded-lg text-xs font-mono">
+                            <p className="font-sans font-bold">{data.name}</p>
+                            <p>{data.value}% of captures</p>
+                            <p className="text-slate-400">{formatETB(data.amountCents)}</p>
+                          </div>
+                        );
+                      }
+                      return null;
+                    }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+
+            <div className="sm:col-span-6 space-y-2 text-xs">
+              {RAIL_MIX_DATA.map((rail) => (
+                <div key={rail.name} className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: rail.color }} />
+                    <span className="text-slate-700 font-medium">{rail.name}</span>
+                  </div>
+                  <div className="text-right font-mono tabular-nums text-slate-900 font-semibold">
+                    {rail.value}%
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-              <div className="flex justify-between items-start mb-2">
-                  <div className="p-2 bg-green-50 rounded-lg text-green-600"><DollarSign size={20} /></div>
-                  <span className="text-xs font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded-full">+12.5%</span>
-              </div>
-              <p className="text-slate-500 text-xs font-medium uppercase tracking-wider">Gross Revenue</p>
-              <h3 className="text-2xl font-bold text-slate-900 mt-1">ETB 95,000</h3>
+      {/* 3. Bottom Grid: Exception Ageing & Discrepancies by Till */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Exception Ageing Card */}
+        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-bold text-slate-900">{t.exceptionAgeing}</h2>
+              <p className="text-xs text-slate-500">Duration open exceptions have awaited statement resolution</p>
+            </div>
+            <EvidenceChip status="Assumption" detail="Batch frequency" />
           </div>
 
-          <div className="bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-              <div className="flex justify-between items-start mb-2">
-                  <div className="p-2 bg-blue-50 rounded-lg text-blue-600"><CreditCard size={20} /></div>
-                  <span className="text-xs font-bold text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">84%</span>
+          <div className="space-y-2 pt-2">
+            {AGEING_BREAKDOWN.map((row) => (
+              <div
+                key={row.range}
+                className="p-3 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-between text-xs"
+              >
+                <div className="flex items-center gap-2">
+                  <Clock
+                    size={15}
+                    className={
+                      row.severity === 'critical'
+                        ? 'text-rose-600'
+                        : row.severity === 'warning'
+                        ? 'text-amber-600'
+                        : 'text-slate-500'
+                    }
+                  />
+                  <span className="font-medium text-slate-800">{row.range}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono font-bold text-slate-900">{row.count} open</span>
+                  <span
+                    className={`text-[10px] px-2 py-0.5 rounded font-semibold uppercase ${
+                      row.severity === 'critical'
+                        ? 'bg-rose-100 text-rose-800'
+                        : row.severity === 'warning'
+                        ? 'bg-amber-100 text-amber-800'
+                        : 'bg-emerald-100 text-emerald-800'
+                    }`}
+                  >
+                    {row.severity}
+                  </span>
+                </div>
               </div>
-              <p className="text-slate-500 text-xs font-medium uppercase tracking-wider">Digital Payments</p>
-              <h3 className="text-2xl font-bold text-slate-900 mt-1">ETB 80,000</h3>
+            ))}
+          </div>
+        </div>
+
+        {/* Discrepancies by Till */}
+        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-bold text-slate-900">{t.tillDiscrepancies}</h2>
+              <p className="text-xs text-slate-500">Cross-terminal reconciliation exception frequency</p>
+            </div>
+            <EvidenceChip status="Sample data" />
           </div>
 
-          <div className="bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-              <div className="flex justify-between items-start mb-2">
-                  <div className="p-2 bg-slate-50 rounded-lg text-slate-600"><TrendingUp size={20} /></div>
-                  <span className="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">15% Tax</span>
-              </div>
-              <p className="text-slate-500 text-xs font-medium uppercase tracking-wider">VAT Collected</p>
-              <h3 className="text-2xl font-bold text-slate-900 mt-1">ETB 14,250</h3>
-          </div>
-
-           <div className="bg-white p-5 rounded-xl border border-slate-100 shadow-sm">
-              <div className="flex justify-between items-start mb-2">
-                  <div className="p-2 bg-red-50 rounded-lg text-red-600"><TrendingDown size={20} /></div>
-                  <span className="text-xs font-bold text-red-600 bg-red-100 px-2 py-0.5 rounded-full">-2.4%</span>
-              </div>
-              <p className="text-slate-500 text-xs font-medium uppercase tracking-wider">Discounts/Refunds</p>
-              <h3 className="text-2xl font-bold text-slate-900 mt-1">ETB 1,200</h3>
-          </div>
-      </div>
-
-      {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Sales Chart */}
-          <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-slate-100 shadow-sm">
-              <h3 className="font-bold text-slate-900 text-lg mb-6">Sales Trends</h3>
-              <div className="h-72 w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={MOCK_CHART_DATA} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
-                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#64748B', fontSize: 12 }} dy={10} />
-                    <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748B', fontSize: 12 }} tickFormatter={(val) => `${val/1000}k`} />
-                    <Tooltip content={<CustomTooltip />} cursor={{fill: '#F8FAFC'}} />
-                    <Bar dataKey="value" fill="#10B981" radius={[4, 4, 0, 0]} barSize={40} />
-                    </BarChart>
-                </ResponsiveContainer>
-              </div>
-          </div>
-
-          {/* Payment Method Distribution */}
-          <div className="bg-white p-6 rounded-xl border border-slate-100 shadow-sm flex flex-col">
-              <h3 className="font-bold text-slate-900 text-lg mb-2">Payment Methods</h3>
-              <div className="flex-1 min-h-[250px] relative">
-                  <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                          <Pie
-                            data={PAYMENT_DATA}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={60}
-                            outerRadius={80}
-                            paddingAngle={5}
-                            dataKey="value"
-                          >
-                            {PAYMENT_DATA.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={entry.color} />
-                            ))}
-                          </Pie>
-                          <Tooltip />
-                      </PieChart>
-                  </ResponsiveContainer>
-                  {/* Legend */}
-                  <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                      <div className="text-center">
-                          <span className="block text-2xl font-bold text-slate-900">84%</span>
-                          <span className="text-xs text-slate-500">Digital</span>
-                      </div>
-                  </div>
-              </div>
-              <div className="space-y-3 mt-4">
-                  {PAYMENT_DATA.map((item) => (
-                      <div key={item.name} className="flex items-center justify-between text-sm">
-                          <div className="flex items-center">
-                              <span className="w-3 h-3 rounded-full mr-2" style={{ backgroundColor: item.color }}></span>
-                              <span className="text-slate-600">{item.name}</span>
-                          </div>
-                          <span className="font-bold text-slate-900">{Math.round((item.value / 95000) * 100)}%</span>
-                      </div>
-                  ))}
-              </div>
-          </div>
-      </div>
-
-      {/* Top Performing Tills */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-          <div className="p-6 border-b border-slate-100">
-              <h3 className="font-bold text-slate-900">Top Performing Tills</h3>
-          </div>
-          <table className="min-w-full divide-y divide-slate-200">
-            <thead className="bg-slate-50">
-                <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Till Name</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Transactions</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Volume</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Efficiency</th>
+          <div className="overflow-x-auto pt-2">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr className="border-b border-slate-200 text-slate-500 uppercase text-[10px]">
+                  <th className="pb-2">Terminal</th>
+                  <th className="pb-2 text-right">Captured</th>
+                  <th className="pb-2 text-right">Exceptions</th>
+                  <th className="pb-2 text-right">Discrepancy %</th>
                 </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200">
-                <tr>
-                    <td className="px-6 py-4 text-sm font-medium text-slate-900">Main Counter (ዋና)</td>
-                    <td className="px-6 py-4 text-sm text-slate-600">145</td>
-                    <td className="px-6 py-4 text-sm font-bold text-slate-900">ETB 45,200</td>
-                    <td className="px-6 py-4 text-sm text-green-600 font-medium">98%</td>
-                </tr>
-                <tr>
-                    <td className="px-6 py-4 text-sm font-medium text-slate-900">Cafe Window (መስኮት)</td>
-                    <td className="px-6 py-4 text-sm text-slate-600">89</td>
-                    <td className="px-6 py-4 text-sm font-bold text-slate-900">ETB 21,500</td>
-                    <td className="px-6 py-4 text-sm text-green-600 font-medium">92%</td>
-                </tr>
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-slate-100 font-sans">
+                {TILL_DISCREPANCIES.map((row) => (
+                  <tr key={row.till} className="hover:bg-slate-50">
+                    <td className="py-2.5 font-medium text-slate-800">{row.till}</td>
+                    <td className="py-2.5 text-right font-mono tabular-nums text-slate-600">
+                      {row.totalCaptured}
+                    </td>
+                    <td className="py-2.5 text-right font-mono tabular-nums text-rose-600 font-semibold">
+                      {row.exceptions}
+                    </td>
+                    <td className="py-2.5 text-right font-mono tabular-nums font-bold text-slate-900">
+                      {row.discrepancyRate}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );
