@@ -42,7 +42,7 @@ export const PAYMENT_RAILS: Record<PaymentRailId, RailConfig> = {
     label: 'Interoperable QR',
     supportsQR: true,
     supportsPushUSSD: false,
-    reportDelay: 'Hourly settlement report',
+    reportDelay: 'Hourly statement report',
     sampleFeeModel: '0.30% (Sample fee model)',
     description: 'National interoperable merchant QR standard (sample specification).',
     accentColor: '#8B5CF6',

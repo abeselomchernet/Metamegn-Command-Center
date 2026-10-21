@@ -2,6 +2,7 @@
  * Low-connectivity capture offline queue simulator.
  * Stores pending transactions locally when network mode is set to offline.
  * Replays upon reconnection with duplicate detection.
+ * Deterministic counter replaces Math.random.
  */
 
 import { CapturePayload } from './EventSourceAdapter';
@@ -16,6 +17,7 @@ const STORAGE_KEY = 'metamegn_offline_capture_queue_v2';
 
 export class OfflineQueueManager {
   private inMemoryQueue: QueuedOfflineEvent[] = [];
+  private counter: number = 0;
 
   constructor() {
     this.loadFromStorage();
@@ -41,8 +43,9 @@ export class OfflineQueueManager {
   }
 
   enqueue(payload: CapturePayload): QueuedOfflineEvent {
+    this.counter += 1;
     const item: QueuedOfflineEvent = {
-      localQueueId: `offline-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+      localQueueId: `offline-${Date.now()}-${this.counter}`,
       payload: { ...payload, isOffline: true },
       queuedAt: new Date().toISOString(),
     };

@@ -1,6 +1,0 @@
-{
-  "summary":  "Fully revised implementation plan incorporating all 8 specific user requirements: split Step 0 into granular sub-steps, Vitest suite for 5 core domains, final polish step with README (including 'how to present it'), docs/ADAPTER.md, CHANGELOG.md, accessibility checks, 'Match rate' naming, 'Illustration of a research question, not a proposal' audience definition, 'Demo role switcher, no authentication' label, gitignored .env.local verification, English default language, and reconciliation summary landing view.",
-  "updatedAt":  "2026-10-21T19:28:23.334889918Z",
-  "requestFeedback":  true,
-  "userFacing":  true
-}

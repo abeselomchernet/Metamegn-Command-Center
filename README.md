@@ -58,9 +58,19 @@ The presentation layer communicates strictly through the `EventSourceAdapter` se
 
 ## 4. How to Run
 
+### Installation & Dependencies
+The project includes an `.npmrc` file configured with `legacy-peer-deps=true` to seamlessly resolve React 19 dependencies with ecosystem tooling.
+
+```bash
+# Standard install (uses repository .npmrc automatically)
+npm install
+
+# Alternatively, if running in an environment without .npmrc support:
+npm install --legacy-peer-deps
+```
+
 ### Development Server
 ```bash
-npm install
 npm run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser.
