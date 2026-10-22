@@ -8,6 +8,7 @@ import {
   Users2,
   Info,
   Columns3,
+  FlaskConical,
   Menu,
   X,
 } from 'lucide-react';
@@ -79,6 +80,12 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       to: '/options',
       label: t.navOptions,
       icon: Columns3,
+      show: true,
+    },
+    {
+      to: '/value',
+      label: t.navValueLab,
+      icon: FlaskConical,
       show: true,
     },
   ];

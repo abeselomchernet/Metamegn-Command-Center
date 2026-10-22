@@ -14,7 +14,8 @@ describe('5-Class Reconciliation Matching Engine', () => {
       cashierId: 'c1',
       cashierName: 'Alem',
       createdAt: '2026-10-21T10:00:00Z',
-      status: 'awaiting_provider',
+      bankId: 'bank-1',
+      status: 'PENDING',
     };
 
     const statement: StatementRow = {
@@ -48,7 +49,8 @@ describe('5-Class Reconciliation Matching Engine', () => {
       cashierId: 'c1',
       cashierName: 'Alem',
       createdAt: '2026-10-21T10:00:00Z',
-      status: 'awaiting_provider',
+      bankId: 'bank-1',
+      status: 'PENDING',
     };
 
     const result = runReconciliation([event], []);
@@ -90,7 +92,8 @@ describe('5-Class Reconciliation Matching Engine', () => {
       cashierId: 'c1',
       cashierName: 'Alem',
       createdAt: '2026-10-21T10:00:00Z',
-      status: 'awaiting_provider',
+      bankId: 'bank-1',
+      status: 'PENDING',
     };
 
     const statement: StatementRow = {
@@ -123,7 +126,8 @@ describe('5-Class Reconciliation Matching Engine', () => {
       cashierId: 'c1',
       cashierName: 'Alem',
       createdAt: '2026-10-21T10:00:00Z',
-      status: 'awaiting_provider',
+      bankId: 'bank-1',
+      status: 'PENDING',
     };
     const ev2: LedgerEvent = {
       id: 'ev-5b',
@@ -135,7 +139,8 @@ describe('5-Class Reconciliation Matching Engine', () => {
       cashierId: 'c1',
       cashierName: 'Alem',
       createdAt: '2026-10-21T10:00:04Z',
-      status: 'awaiting_provider',
+      bankId: 'bank-1',
+      status: 'PENDING',
     };
 
     const result = runReconciliation([ev1, ev2], []);

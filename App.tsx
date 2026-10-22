@@ -15,6 +15,7 @@ import { Staff } from './pages/Staff';
 import { About } from './pages/About';
 import { Tills } from './pages/Tills';
 import { Options } from './pages/Options';
+import { ValueLab } from './pages/ValueLab';
 
 const App: React.FC = () => {
   return (
@@ -32,6 +33,9 @@ const App: React.FC = () => {
 
               {/* Cashier Fast Capture POS Terminal */}
               <Route path="/pos" element={<POS />} />
+
+              {/* Value Lab (Simulation of Value & Sensitivity) */}
+              <Route path="/value" element={<ValueLab />} />
 
               {/* Options Explorer (Five Strategic Paths Kept Open) */}
               <Route path="/options" element={<Options />} />

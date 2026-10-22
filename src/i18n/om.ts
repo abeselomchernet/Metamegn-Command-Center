@@ -138,4 +138,52 @@ export const omTranslations: Translations = {
   condition3: 'Baasiin waliigalaa miiltoo dirqamoonni eegamaa ijaarsa yoo moo\'ate, D filannoo jalqaba qoratamuu ta\'a.',
   condition4: 'Baankiin kamiyyuu kaffaltii irra-deebii yoo hin committed fi gumaachi gaariin yoo hin jirre, E filannoo jalqaba qoratamuu ta\'a.',
   condition5: 'Yoo xiqqaate baankonni lama diinagdee moojulaaraa waloo yoo mallatteessan, karaan sadarkaan gara A deemamu deebisamee ilaalama.',
+
+  // v4: Navigation & States
+  navValueLab: 'Laabii Gatii',
+  statusInitiated: 'INITIATED',
+  statusPending: 'PENDING',
+  statusConfirmed: 'CONFIRMED',
+  statusFailed: 'FAILED',
+  statusReversed: 'REVERSED',
+  statusNeedsReconciliation: 'NEEDS_RECONCILIATION',
+
+  // v4: Exception classes
+  classLateReversal: 'Haqama Boodaa (Late Reversal)',
+  classUnknownOutcome: 'Bu\'aa Hin Beekamne (Unknown Outcome)',
+
+  // v4: Bank scope & Feed recovery
+  bankScopeLabel: 'Ilaalcha Daangaa Baankii',
+  bankScopeAll: 'Baankota Hunda (Walitti Qabama)',
+  bankScopeBank1: 'Akka Baankii 1tti Ilaali',
+  bankScopeBank2: 'Akka Baankii 2tti Ilaali',
+  bankScopeBank3: 'Akka Baankii 3tti Ilaali',
+  bankScopeSeparationTest: 'Mirkaneessa Adda-ba\'iinsa Baankotaa',
+  feedDownSwitch: 'Walsimsiisa Tajaajilli Dhaabbachuu',
+  feedDownActiveNotice: 'Tajaajilli dhiyeessaa DHAABBATEERA: tarreewwan ibsa herregaa dhaabbataniiru. Galmeewwan haala PENDING irratti kuufamaa jiru.',
+  feedNormalNotice: 'Tajaajilli dhiyeessaa HOJII IRRA JIRA: ibsawwan akka baratameetti dhufaa jiru.',
+  feedReplayCatchup: 'Madda Deebisi & Qabi',
+
+  // v4: Value Lab
+  valueLabTitle: 'Laabii Gatii: Fakkeessuu & Miirri-qabeessummaa',
+  valueLabSubtitle: 'Makaaniksii diinagdee fi qaaccessa bu\'aa-ba\'ii "maal amanuu qabdu".',
+  valueLabTopLine: 'Fakkeessuu galteewwan iddoo-qabattoota irratti hundaa\'e. Bu\'aawwan fi miirri-qabeessummaa agarsiisa malee eenyullee akka bitu ragaa miti. Murtoo kamiyyuu dura iddoo-qabattoota hunda lakkoofsa safarameen bakka buusi.',
+  valueLabHonestLimit: 'Fakkeessuun ragaa fakkeenyaa irratti hundaa\'e eenyullee akka bitu agarsiisuu hin danda\'u. Bu\'aawwan makaaniksii irraa maddan, miirri-qabeessummaa galteewwanii, fi lakkoofsoota gaaffii fi deebii irratti safaramuu qaban agarsiisa.',
+  tabBankLens: 'Mula\'ata Baankii',
+  tabMerchantLens: 'Mula\'ata Daldalaa',
+  tabOperatorLens: 'Mula\'ata Hojjechiisaa',
+  tabSystemLens: 'Mula\'ata Sirnaa & Hawaasummaa',
+  bankLensHeading: 'Baankiin maal argata?',
+  bankAlreadySolvesItLabel: 'Baankiin keessoon duraan fureera',
+  bankAlreadySolvesItNote: 'Adeemsi baankichaa mataa isaa duraan gaarii yoo ta\'e, wanti bitamu hin jiru.',
+  merchantLensHeading: 'Daldalaan maal argata?',
+  merchantAlreadyCopesLabel: 'Daldalaan duraan dandamateera (galmee waraqaa, falmii xiqqa)',
+  merchantAlreadyCopesNote: 'Daldalaan kan fayyadamu yoo galmeen amanamaa, salphaa fi baasii yeroo qusatu caalaa xiqqaate qofa.',
+  operatorLensHeading: 'Hojjechiisaan maal baata?',
+  operatorSwitchingValue: 'Qaaccessa Gatii Jijjiirraa',
+  operatorZeroBankMonths: 'Baasii Ji\'oota Baankii Hin Qabne Keessatti Kuufamu',
+  systemLensHeading: 'Gareewwan caalaa maaltu jijjiiramuu danda\'a?',
+  systemInclusionLimitNote: 'Hirmaachisummaan sababa itti xiyyeeffataniidha malee bu\'aa agarsiisni kun agarsiisu miti.',
+  challengeModeTitle: 'Kuni akkamitti dogoggora ta\'uu danda\'a (Mootummaa Qormaataa)',
+  challengeModeFooter: 'Argannoowwan faallaa ni galmeeffamu malee gonkumaa hin hafan.',
 };

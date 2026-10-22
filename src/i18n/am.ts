@@ -138,4 +138,52 @@ export const amTranslations: Translations = {
   condition3: 'የአጋር አጠቃላይ ወጪ ግዴታዎች እየተጠበቁ ግንባታን ካሸነፈ፣ ከዚያ D ለመፈተሽ የመጀመሪያው አማራጭ ይሆናል።',
   condition4: 'ማንኛውም ባንክ ተደጋጋሚ ክፍያዎችን ካልፈቀደ እና አዎንታዊ አስተዋጽኦ ከሌለ፣ ከዚያ E ለመፈተሽ የመጀመሪያው አማራጭ ይሆናል።',
   condition5: 'ቢያንስ ሁለት ባንኮች የጋራ ሞዱላር ኢኮኖሚክስ ከፈረሙ፣ ከዚያ ወደ A የሚወስደው ደረጃ በደረጃ መንገድ እንደገና ይታሰባል።',
+
+  // v4: Navigation & States
+  navValueLab: 'የእሴት ላብራቶሪ',
+  statusInitiated: 'INITIATED',
+  statusPending: 'PENDING',
+  statusConfirmed: 'CONFIRMED',
+  statusFailed: 'FAILED',
+  statusReversed: 'REVERSED',
+  statusNeedsReconciliation: 'NEEDS_RECONCILIATION',
+
+  // v4: Exception classes
+  classLateReversal: 'የዘገየ ስረዛ (Late Reversal)',
+  classUnknownOutcome: 'ያልታወቀ ውጤት (Unknown Outcome)',
+
+  // v4: Bank scope & Feed recovery
+  bankScopeLabel: 'የባንክ ወሰን እይታ',
+  bankScopeAll: 'ሁሉም ባንኮች (የተጠቃለለ)',
+  bankScopeBank1: 'እንደ ባንክ 1 እይ',
+  bankScopeBank2: 'እንደ ባንክ 2 እይ',
+  bankScopeBank3: 'እንደ ባንክ 3 እይ',
+  bankScopeSeparationTest: 'የባንኮች መለያየት ማረጋገጫ',
+  feedDownSwitch: 'የአቅራቢ መረጃ መቆራረጥ ማስመሰያ',
+  feedDownActiveNotice: 'የአቅራቢ መረጃ ተቋርጧል፡ የሂሳብ መግለጫ ረድፎች ቆመዋል። ግብይቶች በ PENDING ሁኔታ ላይ እየተጠራቀሙ ነው።',
+  feedNormalNotice: 'የአቅራቢ መረጃ በመስመር ላይ ነው፡ መግለጫዎች በመደበኛነት እየደረሱ ነው።',
+  feedReplayCatchup: 'መረጃውን መልስ እና አቻችይ',
+
+  // v4: Value Lab
+  valueLabTitle: 'የእሴት ላብራቶሪ፡ ማስመሰል እና ስሜታዊነት',
+  valueLabSubtitle: 'ኢኮኖሚያዊ መካኒኮች እና "ምን ማመን ይጠበቅብዎታል" የተመጣጣኝ ትንተና።',
+  valueLabTopLine: 'በቦታ ያዥ ግብዓቶች ላይ የተመሰረተ ማስመሰል። ውጤቶችን እና ስሜታዊነትን ያሳያል እንጂ ማንም እንደሚገዛ ማረጋገጫ አይደለም። ማንኛውንም መደምደሚያ ከማድረግዎ በፊት እያንዳንዱን ቦታ ያዥ በተለካ አሃዝ ይተኩ።',
+  valueLabHonestLimit: 'በናሙና ውሂብ ላይ የተመሰረተ ማስመሰል ማንም ሰው እንደሚገዛ ማሳየት አይችልም። ከመካኒኮች የሚከተሉ ውጤቶችን፣ ለግብዓቶች ያለውን ስሜታዊነት እና በቃለ መጠይቅ ወቅት የትኞቹ መለካት እንዳለባቸው ያሳያል።',
+  tabBankLens: 'የባንክ መነጽር',
+  tabMerchantLens: 'የነጋዴ መነጽር',
+  tabOperatorLens: 'የኦፕሬተር መነጽር',
+  tabSystemLens: 'የሥርዓት እና ማካተት መነጽር',
+  bankLensHeading: 'ባንኩ ምን ያገኛል?',
+  bankAlreadySolvesItLabel: 'ባንኩ በውስጥ አሠራሩ አስቀድሞ ፈትቶታል',
+  bankAlreadySolvesItNote: 'የባንኩ የራሱ ሂደት ቀድሞውኑ ጥሩ ከሆነ፣ የሚገዛ ምንም ነገር የለም።',
+  merchantLensHeading: 'ነጋዴው ምን ያገኛል?',
+  merchantAlreadyCopesLabel: 'ነጋዴው ቀድሞውኑ ይቋቋማል (የወረቀት ደብተር፣ ጥቂት አለመግባባቶች)',
+  merchantAlreadyCopesNote: 'ነጋዴው የሚያተርፈው መዝገቡ የታመነ፣ ቀላል እና ከሚያድነው ጊዜ ያነሰ ወጪ የሚያስወጣ ከሆነ ብቻ ነው።',
+  operatorLensHeading: 'ኦፕሬተሩ ምን ይሸከማል?',
+  operatorSwitchingValue: 'የመቀያየሪያ እሴት ትንተና',
+  operatorZeroBankMonths: 'ባንክ ባልፈረመባቸው ወራት የተጠራቀመ ወጪ',
+  systemLensHeading: 'ከተዋዋይ ወገኖች ባሻገር ምን ሊለወጥ ይችላል?',
+  systemInclusionLimitNote: 'ማካተት ትኩረት የመስጠት ምክንያት ነው እንጂ ማሳያው ሊያሳየው የሚችል ውጤት አይደለም።',
+  challengeModeTitle: 'ይህ እንዴት ስህተት ሊሆን ይችላል (የፈተና ሁነታ)',
+  challengeModeFooter: 'አሉታዊ ግኝቶች ይመዘገባሉ እንጂ በፍጹም አይገለሉም።',
 };

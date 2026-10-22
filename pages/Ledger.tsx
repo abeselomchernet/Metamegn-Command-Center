@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { defaultAdapter } from '../src/data/MockAdapter';
-import { LedgerEvent, LedgerStatus, PaymentRailId, PAYMENT_RAILS } from '../src/domain/types';
+import {
+  LedgerEvent,
+  LedgerStatus,
+  PaymentRailId,
+  PAYMENT_RAILS,
+  BankId,
+  NEUTRAL_BANKS,
+  TRANSACTION_STATES,
+} from '../src/domain/types';
 import { formatETB } from '../src/domain/money';
 import { EvidenceChip } from '../src/ui/EvidenceChip';
 import { useRole } from '../context/RoleContext';
@@ -23,6 +31,8 @@ import {
   Smartphone,
   Banknote,
   Building2,
+  ShieldCheck,
+  RotateCcw,
 } from 'lucide-react';
 import { EmptyState, LoadingState } from '../src/ui/StateViews';
 
@@ -49,6 +59,7 @@ export const Ledger: React.FC = () => {
   const [events, setEvents] = useState<LedgerEvent[]>([]);
   const [selectedTill, setSelectedTill] = useState<string>('all');
   const [selectedRail, setSelectedRail] = useState<string>('all');
+  const [selectedBank, setSelectedBank] = useState<string>('all');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -62,6 +73,7 @@ export const Ledger: React.FC = () => {
       const filter = {
         tillId: selectedTill !== 'all' ? selectedTill : undefined,
         railId: selectedRail !== 'all' ? (selectedRail as PaymentRailId) : undefined,
+        bankId: selectedBank !== 'all' ? (selectedBank as BankId) : undefined,
         status: selectedStatus !== 'all' ? selectedStatus : undefined,
         searchQuery: searchQuery || undefined,
       };
@@ -74,7 +86,7 @@ export const Ledger: React.FC = () => {
 
   useEffect(() => {
     loadEvents();
-  }, [selectedTill, selectedRail, selectedStatus, searchQuery]);
+  }, [selectedTill, selectedRail, selectedBank, selectedStatus, searchQuery]);
 
   const handleSimulateNewEvents = async () => {
     await defaultAdapter.simulateIncomingEvents(2);
@@ -139,45 +151,62 @@ export const Ledger: React.FC = () => {
 
   const getStatusBadge = (status: LedgerStatus) => {
     switch (status) {
-      case 'matched':
+      case 'CONFIRMED':
         return (
           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
             <CheckCircle size={12} className="text-emerald-600" />
-            <span>{t.statusMatched}</span>
+            <span>CONFIRMED</span>
           </span>
         );
-      case 'awaiting_provider':
+      case 'PENDING':
         return (
           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200">
             <Clock size={12} className="text-amber-600" />
-            <span>{t.statusAwaitingProvider}</span>
+            <span>PENDING</span>
           </span>
         );
-      case 'captured':
-        return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold bg-slate-100 text-slate-800 border border-slate-200">
-            <CheckCircle size={12} className="text-slate-500" />
-            <span>{t.statusCaptured}</span>
-          </span>
-        );
-      case 'exception':
+      case 'NEEDS_RECONCILIATION':
         return (
           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-200">
             <AlertCircle size={12} className="text-rose-600" />
-            <span>{t.statusException}</span>
+            <span>NEEDS_RECON</span>
           </span>
         );
-      case 'voided':
+      case 'REVERSED':
+        return (
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold bg-purple-50 text-purple-800 border border-purple-200">
+            <RotateCcw size={12} className="text-purple-600" />
+            <span>REVERSED</span>
+          </span>
+        );
+      case 'FAILED':
         return (
           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold bg-slate-100 text-slate-500 border border-slate-200 line-through">
             <Ban size={12} className="text-slate-400" />
-            <span>{t.statusVoided}</span>
+            <span>FAILED</span>
+          </span>
+        );
+      case 'INITIATED':
+        return (
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold bg-blue-50 text-blue-800 border border-blue-200">
+            <Clock size={12} className="text-blue-600" />
+            <span>INITIATED</span>
+          </span>
+        );
+      default:
+        return (
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold bg-slate-100 text-slate-700">
+            <span>{status}</span>
           </span>
         );
     }
   };
 
   const canVoid = hasPerm('capture:void');
+
+  // Multi-bank separation test verification
+  const bank2VisibleCount = selectedBank === 'bank-1' ? events.filter((e) => e.bankId === 'bank-2').length : 0;
+  const bank3VisibleCount = selectedBank === 'bank-1' ? events.filter((e) => e.bankId === 'bank-3').length : 0;
 
   return (
     <div className="space-y-6">
@@ -189,7 +218,7 @@ export const Ledger: React.FC = () => {
             <EvidenceChip status="Sample data" detail="Deterministic events" />
           </div>
           <p className="text-xs text-slate-500">
-            Append-only merchant transaction records. Captures show "recorded, awaiting provider report" until verified against external statements.
+            Append-only merchant transaction records. Captures show "recorded, awaiting provider report" (PENDING) until verified against external statements.
           </p>
         </div>
 
@@ -211,8 +240,76 @@ export const Ledger: React.FC = () => {
         </div>
       </div>
 
-      {/* 2. Filter Bar */}
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-2.5 bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
+      {/* 2. Transaction Six-State Lifecycle Diagram */}
+      <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs space-y-2.5">
+        <div className="flex items-center justify-between pb-1.5 border-b border-slate-100">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-800">
+              Transaction State Machine (Six Formal States)
+            </span>
+            <EvidenceChip status="Assumption" detail="Formal state model" />
+          </div>
+          <span className="text-[11px] text-slate-400 font-medium">Traceable references</span>
+        </div>
+
+        {/* Small State Flow Diagram */}
+        <div className="grid grid-cols-2 sm:grid-cols-6 gap-2 text-center text-xs pt-1">
+          <div className="p-2 bg-blue-50/70 border border-blue-200 rounded-lg flex flex-col justify-center items-center">
+            <span className="font-mono font-bold text-blue-900 text-[11px]">1. INITIATED</span>
+            <span className="text-[10px] text-blue-700 mt-0.5">Amount keyed at till</span>
+          </div>
+
+          <div className="p-2 bg-amber-50/70 border border-amber-200 rounded-lg flex flex-col justify-center items-center">
+            <span className="font-mono font-bold text-amber-900 text-[11px]">2. PENDING</span>
+            <span className="text-[10px] text-amber-700 mt-0.5">Logged, awaiting batch</span>
+          </div>
+
+          <div className="p-2 bg-emerald-50/70 border border-emerald-200 rounded-lg flex flex-col justify-center items-center">
+            <span className="font-mono font-bold text-emerald-900 text-[11px]">3. CONFIRMED</span>
+            <span className="text-[10px] text-emerald-700 mt-0.5">Statement verified</span>
+          </div>
+
+          <div className="p-2 bg-rose-50/70 border border-rose-200 rounded-lg flex flex-col justify-center items-center">
+            <span className="font-mono font-bold text-rose-900 text-[11px]">4. NEEDS_RECON</span>
+            <span className="text-[10px] text-rose-700 mt-0.5">Mismatch or missing</span>
+          </div>
+
+          <div className="p-2 bg-purple-50/70 border border-purple-200 rounded-lg flex flex-col justify-center items-center">
+            <span className="font-mono font-bold text-purple-900 text-[11px]">5. REVERSED</span>
+            <span className="text-[10px] text-purple-700 mt-0.5">Late provider clawback</span>
+          </div>
+
+          <div className="p-2 bg-slate-100 border border-slate-300 rounded-lg flex flex-col justify-center items-center">
+            <span className="font-mono font-bold text-slate-700 text-[11px]">6. FAILED</span>
+            <span className="text-[10px] text-slate-500 mt-0.5">Rejected or voided</span>
+          </div>
+        </div>
+
+        <p className="text-[11px] text-slate-500 italic pt-1">
+          Rule: A local "success" animation or a network timeout must never display as CONFIRMED. An event transitions to CONFIRMED only upon external statement verification.
+        </p>
+      </div>
+
+      {/* 3. Bank Scope Verification Card (when filtered to Bank 1) */}
+      {selectedBank === 'bank-1' && (
+        <div className="bg-slate-900 text-white rounded-xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs shadow-xs">
+          <div className="flex items-center gap-2">
+            <ShieldCheck size={16} className="text-emerald-400 shrink-0" />
+            <div>
+              <span className="font-bold text-white block">
+                {t.bankScopeSeparationTest}
+              </span>
+              <span className="text-slate-300 text-[11px]">
+                Active view: Bank 1. Bank 2 events visible: {bank2VisibleCount} (Zero/Pass). Bank 3 events visible: {bank3VisibleCount} (Zero/Pass).
+              </span>
+            </div>
+          </div>
+          <EvidenceChip status="Assumption" detail="Illustrates separation requirement; not a security proof" className="bg-slate-800 text-slate-200 border-slate-700" />
+        </div>
+      )}
+
+      {/* 4. Filter Bar */}
+      <div className="grid grid-cols-1 sm:grid-cols-5 gap-2.5 bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
         {/* Search */}
         <div className="relative">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -224,6 +321,18 @@ export const Ledger: React.FC = () => {
             className="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-hidden focus:border-slate-900 text-slate-800 font-sans"
           />
         </div>
+
+        {/* Bank Scope Selector */}
+        <select
+          value={selectedBank}
+          onChange={(e) => setSelectedBank(e.target.value)}
+          className="px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-hidden focus:border-slate-900 text-slate-800 font-semibold"
+        >
+          <option value="all">{t.bankScopeAll}</option>
+          <option value="bank-1">{t.bankScopeBank1}</option>
+          <option value="bank-2">{t.bankScopeBank2}</option>
+          <option value="bank-3">{t.bankScopeBank3}</option>
+        </select>
 
         {/* Till Selector */}
         <select
@@ -259,12 +368,12 @@ export const Ledger: React.FC = () => {
           onChange={(e) => setSelectedStatus(e.target.value)}
           className="px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-hidden focus:border-slate-900 text-slate-800"
         >
-          <option value="all">All Statuses</option>
-          <option value="awaiting_provider">Awaiting Provider Report</option>
-          <option value="matched">Matched With Report</option>
-          <option value="exception">Exception / Discrepancy</option>
-          <option value="captured">Captured (Cash)</option>
-          <option value="voided">Voided</option>
+          <option value="all">All Six States</option>
+          {TRANSACTION_STATES.map((st) => (
+            <option key={st} value={st}>
+              {st}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -292,6 +401,7 @@ export const Ledger: React.FC = () => {
                   <th className="py-3 px-4">{t.time}</th>
                   <th className="py-3 px-4">Transaction Ref</th>
                   <th className="py-3 px-4">{t.rail}</th>
+                  <th className="py-3 px-4">Bank Scope</th>
                   <th className="py-3 px-4">{t.till} & Cashier</th>
                   <th className="py-3 px-4 text-right">{t.amount}</th>
                   <th className="py-3 px-4">{t.status}</th>
@@ -322,6 +432,11 @@ export const Ledger: React.FC = () => {
                           {getRailIcon(ev.railId)}
                           <span className="font-medium">{rail?.label || ev.railId}</span>
                         </div>
+                      </td>
+                      <td className="py-3 px-4 whitespace-nowrap text-slate-600 font-mono text-[11px]">
+                        <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-semibold border border-slate-200">
+                          {NEUTRAL_BANKS[ev.bankId]?.name || ev.bankId}
+                        </span>
                       </td>
                       <td className="py-3 px-4 whitespace-nowrap text-slate-700">
                         <div className="font-medium text-slate-900">{ev.tillName}</div>

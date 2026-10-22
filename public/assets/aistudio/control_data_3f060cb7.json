@@ -1,0 +1,971 @@
+{
+  "findings": [
+    [
+      "A01",
+      "Critical",
+      "Institutional authority absent",
+      "All current packages",
+      "Prospective manager; no formal PSS research mandate, access rights, engagement or capital delegation demonstrated",
+      "No institutional use or access can be presumed",
+      "Seek written appointment confirmation, sponsor, approved TOR and authorised information governance",
+      "Prospective division manager / PSS sponsor",
+      "Post-appointment"
+    ],
+    [
+      "A02",
+      "Critical",
+      "Bank buyer evidence remains uncollected",
+      "V03, F04, F05, F01",
+      "Zero completed bank interviews, documented buyer permissions, signed economic sponsorship or verified willingness to pay",
+      "Revenue forecasts and bank ROI cannot support investment",
+      "Execute authorised V03 study, evidence reviews, quantified baseline and documented buying authority",
+      "Product/Business Development + banks",
+      "Post-authorisation"
+    ],
+    [
+      "A03",
+      "Critical",
+      "PSS actual product and systems reuse unverified",
+      "S03, V05, P01, P02, F02",
+      "Proposed reuse not verified by internal architectures, logs, interface contracts or source-to-ledger tests",
+      "Technology scope and technical CAPEX remain unknown",
+      "Complete controlled V05 systems inventory and F02 test gates",
+      "PSS CTO/Operations/CISO",
+      "Post-authorisation"
+    ],
+    [
+      "A04",
+      "Critical",
+      "Licence, scheme, privacy and cyber permissions not signed off",
+      "F03, F02, P02, P03",
+      "Original licence schedules, actual customer contracts, data-processing allocation and relevant certification evidence not reviewed",
+      "Live data and pilots may be impermissible",
+      "Obtain original licences, legal opinions, regulator/scheme requirements and DPO/CISO controls sign-off",
+      "PSS Legal, Compliance, DPO, CISO",
+      "Post-authorisation"
+    ],
+    [
+      "A05",
+      "Critical",
+      "Financial returns and capital requirement remain unestablished",
+      "F04, F05, F01",
+      "Bank economics, PSS delivery costs, vendor quotations, funding limits and finance-approved assumptions are empty",
+      "Cannot support procurement or capital sanction",
+      "CFO-certify base/downside cash flow, bank ROI, five-option comparison and funding headroom",
+      "PSS CFO/Finance",
+      "Post-evidence"
+    ],
+    [
+      "A06",
+      "Critical",
+      "Independent assurance has not been performed",
+      "F06, F01",
+      "F06 is only an assurance design; no appointed reviewers or re-performance",
+      "Feasibility sign-off may be self-referential",
+      "Appoint sufficiently independent reviewers and issue dated exception-based assurance report",
+      "Risk / Internal Audit / Board sponsor",
+      "Before investment decision"
+    ],
+    [
+      "A07",
+      "High",
+      "Market evidence bridge requires controlled revision",
+      "V02, V04",
+      "V04 introduces April 2026 merchant study not yet integrated into the V02 market base and V02 scoring",
+      "Potential stale/incomplete segment and adoption inference",
+      "Issue V02 controlled addendum; preserve survey denominator and do not convert usage into bank revenue",
+      "Market research lead",
+      "Pre-joining safe desk task"
+    ],
+    [
+      "A08",
+      "High",
+      "Dated public claims require pre-circulation refresh",
+      "V02, S01, S03, F03, F02",
+      "2026 scheme figures, regulator status, draft policy and security credentials can change",
+      "Uncurrent regulatory/competitive claims in management briefing",
+      "Re-open primary sources, record access date, classification and original instrument/version",
+      "Research analyst / later Legal",
+      "Before institutional circulation"
+    ],
+    [
+      "A09",
+      "High",
+      "Five-option comparability is prospective, not quantified",
+      "S02, P04, F05, F01",
+      "Early option scores are illustrative; later F05 remains input-empty",
+      "False precision if ranking repeated without real cost and bank evidence",
+      "Re-run A–E under same 60-month assumptions including BAU and partner alternatives",
+      "Strategy + Finance",
+      "Post-evidence"
+    ],
+    [
+      "A10",
+      "High",
+      "Supplier and related-party reviews not commissioned",
+      "P04, F05, F03",
+      "PSS Trading/other providers appear only as options; no disclosures, quotes or contract review",
+      "Procurement fairness and independence risks",
+      "Obtain ownership/conflict data, tender rules, price quotes, due diligence and exit controls",
+      "Procurement / Legal / Risk",
+      "Post-authorisation"
+    ],
+    [
+      "A11",
+      "High",
+      "Transaction/settlement evidence ownership needs written agreement",
+      "P01, P02, P03, F03",
+      "Proposed bank/PSS responsibility matrix has no signed participant acceptance",
+      "Operational misallocation or unsafe bank instruction",
+      "Sign bank-data authorisation, responsibilities, dispute/settlement and record-retention schedules",
+      "Bank sponsor + PSS Ops/Legal",
+      "Before pilot"
+    ],
+    [
+      "A12",
+      "High",
+      "SoftPOS and security certificate scope unverified",
+      "S03, P01, F02, F03",
+      "Public announcements/older certificates do not establish present applicable PCI/MPoC/3DS or solution configuration scope",
+      "Certification claims and deployment perimeter may be incorrect",
+      "Recheck live certificate registry, AoC/ROC coverage, solution listings and scheme acceptance",
+      "PSS CISO / Compliance / vendor",
+      "Post-authorisation"
+    ],
+    [
+      "A13",
+      "Medium",
+      "Documents cross-reference IDs but not a signed baseline",
+      "P01–P04, F01–F06",
+      "Traceability trackers exist but no collectively ratified configuration/version baseline",
+      "Changes could break cross-document assumption consistency",
+      "Register controlled change requests and approve common module, interface and release definitions",
+      "Programme PMO + CTO/Product",
+      "After mandate"
+    ],
+    [
+      "A14",
+      "Medium",
+      "Field research consent and sampling not implemented",
+      "V03, V04",
+      "Questionnaires and recruitment plans are prepared; translated consent, privacy retention and recruitment unapproved",
+      "Fieldwork data could be invalid or non-compliant",
+      "Approve protocol, consent translations, sampling quotas and secure evidence store before collecting responses",
+      "PSS Legal/DPO + research lead",
+      "Before fieldwork"
+    ],
+    [
+      "A15",
+      "Medium",
+      "Post-joining schedule is illustrative",
+      "Notebook, F01, V03–V05",
+      "Suggested first 90 days assumes access, participants and governance capacities that may not materialise",
+      "Schedule mistaken for committed delivery or pilot date",
+      "Rebaseline workplan after mandate, set resource capacity and dependency-based dates",
+      "Division manager + sponsor",
+      "After appointment"
+    ],
+    [
+      "A16",
+      "Medium",
+      "Legacy approval documents remain alongside redesigned strategy",
+      "Historical last-mile zips, v3 redesign, S01",
+      "Older national network strategy and approval wording differs from current bank-centric bounded thesis",
+      "Risk of accidental presentation as current endorsed baseline",
+      "Mark legacy archive read-only; circulate only controlled F01/S01 with approval disclaimer",
+      "Document controller",
+      "Immediate desk task"
+    ],
+    [
+      "A17",
+      "Medium",
+      "Independent content accuracy review still pending",
+      "All 27 Word/PDF pairs and 16 workbooks",
+      "Automated checks establish file integrity but not every numeric claim, citation, cross-sheet formula or legal construction",
+      "Residual analytical and formatting risk if called final",
+      "Perform targeted red-team source audit, model recalculation and legal review before external circulation",
+      "Research quality lead / CFO / Legal",
+      "Before circulation"
+    ],
+    [
+      "A18",
+      "Observation",
+      "Formal version-control and master index introduced here",
+      "18 canonical packages",
+      "Individual packages exist with version 1.0 but no programme-wide frozen release manifest previously issued",
+      "Prior reuse might mix local revisions",
+      "Adopt SHA-256 manifest and change register as baseline 1.0; retain originals unchanged",
+      "Document controller",
+      "Now"
+    ]
+  ],
+  "gates": [
+    [
+      "G01",
+      "Mandate",
+      "Formal appointment and delegated scope",
+      "Appointment record, research TOR and written sponsor",
+      "Sponsor / HR / Legal",
+      "Block all institutional contact and access",
+      "No"
+    ],
+    [
+      "G02",
+      "Mandate",
+      "Information access approval and segregation",
+      "Signed role-based access, retention and data classification",
+      "CISO / DPO",
+      "Block PSS/bank internal data access",
+      "No"
+    ],
+    [
+      "G03",
+      "Governance",
+      "Programme sponsor and Steering Committee",
+      "Signed RACI; decision authority matrix",
+      "CEO/sponsor / PMO",
+      "Block official programme activation",
+      "No"
+    ],
+    [
+      "G04",
+      "Market",
+      "Bank problem and operational baseline",
+      "Authorised V03 interviews and verified metrics",
+      "Business / Banks",
+      "No investment claim",
+      "No"
+    ],
+    [
+      "G05",
+      "Market",
+      "Bank economic buyer, procurement authority",
+      "Buyer confirmation and budget pathway",
+      "Banks / Commercial",
+      "No bank sales forecast",
+      "No"
+    ],
+    [
+      "G06",
+      "Market",
+      "Bank willingness to pay at tested tariff",
+      "Pricing research and documentary commitment",
+      "Banks / Commercial",
+      "No revenue input treated as verified",
+      "No"
+    ],
+    [
+      "G07",
+      "Market",
+      "Merchant pain and role relevance",
+      "Approved V04 research and verified coded findings",
+      "Research / DPO",
+      "No merchant adoption claim as proof of bank demand",
+      "No"
+    ],
+    [
+      "G08",
+      "Product",
+      "Actual PSS feature and licence inventory",
+      "Product demos, architecture exports, actual contracts",
+      "Product / CTO",
+      "No reuse claim",
+      "No"
+    ],
+    [
+      "G09",
+      "Technical",
+      "Authorised data/feed rights & bank adapter interface",
+      "Bank permission, data contract, sandbox source samples",
+      "CTO / Legal / Bank",
+      "No production integration",
+      "No"
+    ],
+    [
+      "G10",
+      "Technical",
+      "Event provenance/idempotency proof",
+      "F02 tests duplicate/late/reversal/unknown outcomes",
+      "Engineering / Ops",
+      "No controlled live workflow",
+      "No"
+    ],
+    [
+      "G11",
+      "Technical",
+      "Reconciliation against bank settlement records",
+      "Independent bank ledger match and exception replay",
+      "Ops / Bank Finance",
+      "No settlement accuracy claim",
+      "No"
+    ],
+    [
+      "G12",
+      "Security",
+      "Tenant isolation and least-privilege controls",
+      "Pen test, RBAC, log access and KMS evidence",
+      "CISO / Technology",
+      "No multi-bank data use",
+      "No"
+    ],
+    [
+      "G13",
+      "Security",
+      "Disaster recovery and incident testing",
+      "RTO/RPO/restore logs and escalations",
+      "CISO / Ops",
+      "No SLA guarantee",
+      "No"
+    ],
+    [
+      "G14",
+      "Compliance",
+      "Original payment licence/scope confirmed",
+      "Original active licence schedules and legal memo",
+      "Legal / NBE liaison",
+      "No assumption of licensed perimeter",
+      "No"
+    ],
+    [
+      "G15",
+      "Compliance",
+      "Payment scheme and QR/SoftPOS approvals",
+      "Applicable scheme letters, vendor listings and test evidence",
+      "Legal / Scheme / CISO",
+      "No PSS Pay/scheme launch",
+      "No"
+    ],
+    [
+      "G16",
+      "Privacy",
+      "Lawful processing, controller roles, retention",
+      "DPIA, DPA, data map and consent where needed",
+      "DPO / Legal",
+      "No personal/transaction data collection",
+      "No"
+    ],
+    [
+      "G17",
+      "Cybersecurity",
+      "Critical infrastructure designation/obligations",
+      "INSA applicability review and controls evidence",
+      "Legal / CISO",
+      "No regulatory clearance claim",
+      "No"
+    ],
+    [
+      "G18",
+      "Operations",
+      "Bank–PSS signed operating responsibility RACI",
+      "Contracts, dispute, settlement and incident clauses",
+      "Legal / Operations / Bank",
+      "No operational pilot",
+      "No"
+    ],
+    [
+      "G19",
+      "Sourcing",
+      "Vendor neutrality and related-party conflicts",
+      "Procurement policy, declarations and comparisons",
+      "Procurement / Legal",
+      "No supplier selection",
+      "No"
+    ],
+    [
+      "G20",
+      "Sourcing",
+      "Vendor security and exit viability",
+      "DDQ, audit rights, portability and exit tests",
+      "CISO / Procurement",
+      "No contract award",
+      "No"
+    ],
+    [
+      "G21",
+      "Finance",
+      "Finance-certified PSS unit economics",
+      "Validated direct costs, support, security and tax assumptions",
+      "CFO",
+      "No positive margin claim",
+      "No"
+    ],
+    [
+      "G22",
+      "Finance",
+      "Bank ROI verified with cost baseline",
+      "Bank value bridge and buyer sign-off",
+      "Bank Finance / Commercial",
+      "No price/economic approval",
+      "No"
+    ],
+    [
+      "G23",
+      "Finance",
+      "Five-option NPV/IRR and funding stress",
+      "60-month model, downside and no-build baseline",
+      "CFO / Independent reviewer",
+      "No CAPEX approval",
+      "No"
+    ],
+    [
+      "G24",
+      "Assurance",
+      "Independent challenge completed",
+      "F06 re-performance, exceptions and independent opinion",
+      "Risk/Internal Audit",
+      "No final feasibility attestation",
+      "No"
+    ],
+    [
+      "G25",
+      "Decision",
+      "Revised F01 signed decision package",
+      "Versioned F01; required approvals recorded",
+      "Executive authority",
+      "No procurement/pilot/investment sanction",
+      "No"
+    ]
+  ],
+  "jobs": [
+    [
+      "J01",
+      "Before joining",
+      "Immediate",
+      "Freeze current programme library and preserve hashes",
+      "Master library + SHA manifest",
+      "Personal owner",
+      "No institutional access",
+      "Ready - desk"
+    ],
+    [
+      "J02",
+      "Before joining",
+      "Immediate",
+      "Review source-control and add newly published merchant research to V02 change request",
+      "V02 addendum proposal",
+      "Personal owner",
+      "Public sources only",
+      "Ready - desk"
+    ],
+    [
+      "J03",
+      "Before joining",
+      "Immediate",
+      "Refresh time-sensitive regulator and licence/public statistics references",
+      "Dated source log",
+      "Personal owner",
+      "No internal claims",
+      "Ready - desk"
+    ],
+    [
+      "J04",
+      "Before joining",
+      "Before appointment",
+      "Prepare a one-page positioning introduction for authorised PSS discussion",
+      "Unofficial discussion note",
+      "Personal owner",
+      "No PSS representation",
+      "Ready - desk"
+    ],
+    [
+      "J05",
+      "Before joining",
+      "Before appointment",
+      "Prepare proposed functional sponsor map and neutral approval questions",
+      "Owner map",
+      "Personal owner",
+      "No external circulation",
+      "Ready - desk"
+    ],
+    [
+      "J06",
+      "Before joining",
+      "Before appointment",
+      "Cross-check S01/F01 narrative and S02 five options for common terms",
+      "Change request list",
+      "Personal owner",
+      "No unapproved revisions to source",
+      "Ready - desk"
+    ],
+    [
+      "J07",
+      "After appointment",
+      "Day 1–5",
+      "Confirm formal role, delegated authority and confidentiality obligations",
+      "Role and access record",
+      "Sponsor / HR / Legal",
+      "Appointment",
+      "Deferred - approval"
+    ],
+    [
+      "J08",
+      "After appointment",
+      "Day 1–10",
+      "Identify executive sponsor, steering group and budget owner",
+      "Signed sponsor/RACI",
+      "Division manager / CEO",
+      "J07",
+      "Deferred - approval"
+    ],
+    [
+      "J09",
+      "After appointment",
+      "Day 1–10",
+      "Submit S04/V01 as a bounded research mandate, not platform approval",
+      "Authorised research TOR",
+      "Sponsor / Strategy",
+      "J08",
+      "Deferred - approval"
+    ],
+    [
+      "J10",
+      "After appointment",
+      "Day 1–15",
+      "Open controlled repository and evidence access protocols",
+      "Approved store, naming, roles",
+      "PMO / DPO / CISO",
+      "J09",
+      "Deferred - approval"
+    ],
+    [
+      "J11",
+      "After appointment",
+      "Day 1–15",
+      "Obtain original licences and approved bank/PSS contracts via authorised route",
+      "Legal perimeter evidence",
+      "Legal / Compliance",
+      "J10",
+      "Deferred - approval"
+    ],
+    [
+      "J12",
+      "After appointment",
+      "Day 1–15",
+      "Map current PSS products, their actual owners and source systems",
+      "Product baseline kickoff",
+      "CTO / Ops / Product",
+      "J09",
+      "Deferred - approval"
+    ],
+    [
+      "J13",
+      "After appointment",
+      "Day 1–15",
+      "Agree independent challenge reviewer and no-self-approval rule",
+      "Assurance charter",
+      "Audit / Risk / Sponsor",
+      "J09",
+      "Deferred - approval"
+    ],
+    [
+      "J14",
+      "After appointment",
+      "Day 8–25",
+      "Authorise V03 bank discovery protocol, sampling and contact route",
+      "Bank fieldwork permission",
+      "Legal / Sponsor / Banks",
+      "J09, J10",
+      "Deferred - approval"
+    ],
+    [
+      "J15",
+      "After appointment",
+      "Day 10–35",
+      "Conduct neutral bank interviews and establish objective pain baseline",
+      "Coded bank evidence",
+      "Commercial / Research",
+      "J14",
+      "Deferred - approval"
+    ],
+    [
+      "J16",
+      "After appointment",
+      "Day 10–35",
+      "Approve V04 merchant consent, language versions and interview sample",
+      "Merchant fieldwork permission",
+      "Research / DPO / Legal",
+      "J10",
+      "Deferred - approval"
+    ],
+    [
+      "J17",
+      "After appointment",
+      "Day 20–45",
+      "Run V04 merchant interviews and test competing value concepts",
+      "Merchant evidence report",
+      "Research lead",
+      "J16",
+      "Deferred - approval"
+    ],
+    [
+      "J18",
+      "After appointment",
+      "Day 10–35",
+      "Perform V05 current-state product demos and source map",
+      "Verified interface and product list",
+      "CTO / Product / Ops",
+      "J12",
+      "Deferred - approval"
+    ],
+    [
+      "J19",
+      "After appointment",
+      "Day 20–50",
+      "Perform F02 integration/duplicate/reversal/tenant-isolation tests in authorised lab",
+      "Test evidence and exception log",
+      "Engineering / CISO",
+      "J18, J10",
+      "Deferred - approval"
+    ],
+    [
+      "J20",
+      "After appointment",
+      "Day 15–45",
+      "Review actual licences, data protection and scheme permissions",
+      "F03 legal memo / blockers",
+      "Legal / DPO / CISO",
+      "J11",
+      "Deferred - approval"
+    ],
+    [
+      "J21",
+      "After appointment",
+      "Day 20–50",
+      "Test bank value and binding authority to pay, without leading questions",
+      "Buyer ROI + WTP evidence",
+      "Banks / Commercial",
+      "J15",
+      "Deferred - approval"
+    ],
+    [
+      "J22",
+      "After appointment",
+      "Day 25–55",
+      "CFO validates operating cost, technology reuse and option CAPEX assumptions",
+      "Certified cost input register",
+      "CFO / CTO",
+      "J18, J21",
+      "Deferred - approval"
+    ],
+    [
+      "J23",
+      "After appointment",
+      "Day 30–60",
+      "Re-evaluate build, buy, partner, PSS Trading and BAU fairly",
+      "P04 options comparison",
+      "Procurement / Finance",
+      "J18, J22",
+      "Deferred - approval"
+    ],
+    [
+      "J24",
+      "After appointment",
+      "Day 40–65",
+      "Re-score S02 strategies with evidence and protect no-investment baseline",
+      "Updated options memo",
+      "Strategy / Independent challenger",
+      "J21, J22",
+      "Deferred - approval"
+    ],
+    [
+      "J25",
+      "After appointment",
+      "Day 45–70",
+      "Rebuild F04 bank/PSS business economics with evidence",
+      "Two-sided commercial business case",
+      "Finance / Commercial",
+      "J21, J22",
+      "Deferred - approval"
+    ],
+    [
+      "J26",
+      "After appointment",
+      "Day 50–75",
+      "Populate F05 60-month base/downside/alternative financial model",
+      "Signed financial model and caveats",
+      "CFO / Finance",
+      "J23, J25",
+      "Deferred - approval"
+    ],
+    [
+      "J27",
+      "After appointment",
+      "Day 55–75",
+      "Validate proposed operating RACI and PSS–bank contract schedules",
+      "Operating/legal exceptions list",
+      "Ops / Legal / Banks",
+      "J20, J18",
+      "Deferred - approval"
+    ],
+    [
+      "J28",
+      "After appointment",
+      "Day 60–80",
+      "Have independent reviewers challenge the entire record and reperform key calculations",
+      "F06 assurance report",
+      "Internal Audit / Risk",
+      "J19, J20, J26",
+      "Deferred - approval"
+    ],
+    [
+      "J29",
+      "After appointment",
+      "Day 75–85",
+      "Update F01 conclusion and record alternative paths/stop criteria",
+      "F01 controlled version 2 draft",
+      "Programme PMO",
+      "J28",
+      "Deferred - approval"
+    ],
+    [
+      "J30",
+      "After appointment",
+      "Day 80–90",
+      "Submit gated research findings for actual governance decision",
+      "Unsigned until formal decision",
+      "Sponsor / Executive authority",
+      "J29",
+      "Deferred - approval"
+    ],
+    [
+      "J31",
+      "After appointment",
+      "Only if approved",
+      "Design a separately authorised synthetic or controlled pilot plan",
+      "Pilot TOR and controls",
+      "CTO / Legal / Risk",
+      "New separate pilot approval",
+      "Deferred - new gate"
+    ],
+    [
+      "J32",
+      "After appointment",
+      "Only if approved",
+      "Consider supplier selection or capital expenditure after documented authorisations",
+      "Procurement and investment resolution",
+      "Executive / Procurement",
+      "Separate procurement/capital gate",
+      "Deferred - new gate"
+    ]
+  ],
+  "change_requests": [
+    [
+      "CR01",
+      "V02",
+      "Add April 2026 merchant study as controlled market addendum; preserve denominator",
+      "High",
+      "Open",
+      "Research lead",
+      "A07"
+    ],
+    [
+      "CR02",
+      "All",
+      "Refresh public figures and regulator citations before any circulation",
+      "High",
+      "Open",
+      "Research lead",
+      "A08"
+    ],
+    [
+      "CR03",
+      "P01/P02/P03",
+      "Review shared module boundaries, event data model and banking duty ownership",
+      "Medium",
+      "Open",
+      "CTO/Product/Legal",
+      "A13"
+    ],
+    [
+      "CR04",
+      "F03",
+      "Confirm applicability of new cybersecurity, data protection, legal instruments",
+      "High",
+      "Open",
+      "PSS Legal/CISO",
+      "A04"
+    ],
+    [
+      "CR05",
+      "S03/V05/F02",
+      "Map product announcements to production evidence and current certificates",
+      "High",
+      "Open",
+      "PSS CTO/CISO",
+      "A03"
+    ],
+    [
+      "CR06",
+      "F04/F05",
+      "Reconcile two-sided bank ROI and CFO-funded investment assumptions",
+      "High",
+      "Open",
+      "CFO/Commercial",
+      "A05"
+    ],
+    [
+      "CR07",
+      "F06/F01",
+      "Attach independent review mandate and signed exceptions closure",
+      "High",
+      "Open",
+      "Audit/Sponsor",
+      "A06"
+    ],
+    [
+      "CR08",
+      "P04",
+      "Confirm related-party ownership/conflicts and supplier selection protocols",
+      "High",
+      "Open",
+      "Legal/Procurement",
+      "A10"
+    ],
+    [
+      "CR09",
+      "V03/V04",
+      "Secure fieldwork protocol, sampling and multilingual consent rules",
+      "Medium",
+      "Open",
+      "DPO/Research",
+      "A14"
+    ],
+    [
+      "CR10",
+      "Library",
+      "Require version and SHA record before any derivative doc is circulated",
+      "Medium",
+      "Open",
+      "Document controller",
+      "A18"
+    ]
+  ],
+  "source_checks": [
+    [
+      "SRC01",
+      "NBE National Digital Payments Strategy 2026-30",
+      "draft vs final status",
+      "V02/S01/F04/F03",
+      "https://nbe.gov.et/ndps/",
+      "Regulator primary; check whether still draft",
+      "Pending refresh"
+    ],
+    [
+      "SRC02",
+      "NBE payment operators registry",
+      "PSS licences/scope listing",
+      "S03/F03",
+      "https://nbe.gov.et/payment-instrument-issuers-system-operators/",
+      "Public register not original licence",
+      "Pending refresh"
+    ],
+    [
+      "SRC03",
+      "PSS official services and product claims",
+      "PSS Pay/Secure/PSS Trading scope",
+      "S03/V05/P01",
+      "",
+      "Seek official PSS site and internal product evidence",
+      "Pending refresh"
+    ],
+    [
+      "SRC04",
+      "EthSwitch FY2025/26 interoperability metrics",
+      "definition, dates, QR mix",
+      "V02",
+      "",
+      "Official EthSwitch primary and reporting period",
+      "Pending refresh"
+    ],
+    [
+      "SRC05",
+      "Telebirr FY2025/26 merchants",
+      "registered vs active and period",
+      "V02",
+      "",
+      "Company reported, not eligible bank spend",
+      "Pending refresh"
+    ],
+    [
+      "SRC06",
+      "Merchant Payments Observatory Ethiopia Wave 1",
+      "2,724 survey/sample denominator and weighted frame",
+      "V04; V02 amendment",
+      "",
+      "Review original April 2026 PDF and methods",
+      "Pending refresh"
+    ],
+    [
+      "SRC07",
+      "Personal Data Protection Proclamation 1321/2024",
+      "original Gazette, rules, controller/processor",
+      "F03/P03",
+      "",
+      "Counsel confirm binding requirements",
+      "Pending legal review"
+    ],
+    [
+      "SRC08",
+      "Critical Infrastructure Cybersecurity Proclamation 1426/2026",
+      "designation, notifications, relevant standard",
+      "F03/F02",
+      "",
+      "Counsel/CISO review original instrument and designation",
+      "Pending legal review"
+    ],
+    [
+      "SRC09",
+      "PCI DSS and any PSS certification",
+      "status, audit scope, expiry, evidence",
+      "S03/F02",
+      "https://www.pcisecuritystandards.org/",
+      "Certification scope must be verified in documents",
+      "Pending certification check"
+    ],
+    [
+      "SRC10",
+      "PCI MPoC",
+      "SoftPOS solution / environment scope",
+      "F02/P01",
+      "https://www.pcisecuritystandards.org/standards/mobile-payments-on-cots-mpoc/",
+      "PCI DSS is not MPoC listing",
+      "Pending certification check"
+    ],
+    [
+      "SRC11",
+      "EMVCo QR standards and national EthQR participation",
+      "implementation vs scheme licence",
+      "P01/P02/F03",
+      "https://www.emvco.com/",
+      "Standard compliance is not scheme permission",
+      "Pending legal/tech review"
+    ],
+    [
+      "SRC12",
+      "NBE financial consumer protection guidance",
+      "escalation periods and role",
+      "F03/P03",
+      "https://nbe.gov.et/",
+      "Different from contract SLA",
+      "Pending legal review"
+    ],
+    [
+      "SRC13",
+      "PSS Trading beneficial ownership and related-party rules",
+      "related-party conflicts and procurement",
+      "P04",
+      "",
+      "Needs actual ownership/policy documents",
+      "Pending procurement review"
+    ],
+    [
+      "SRC14",
+      "Financial source inputs and tax/accounting",
+      "tax rate, financing, FX, hurdle and capex",
+      "F04/F05",
+      "",
+      "Use CFO-controlled internal source only",
+      "Pending finance review"
+    ]
+  ]
+}

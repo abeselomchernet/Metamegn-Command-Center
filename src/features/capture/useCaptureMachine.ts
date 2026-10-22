@@ -90,7 +90,8 @@ export const useCaptureMachine = ({
           cashierId,
           cashierName,
           createdAt: new Date().toISOString(),
-          status: 'awaiting_provider',
+          status: 'PENDING',
+          bankId: 'bank-1',
           offlineQueued: true,
         };
         setLastEvent(mockLocalEv);

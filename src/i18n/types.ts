@@ -138,4 +138,52 @@ export interface Translations {
   condition3: string;
   condition4: string;
   condition5: string;
+
+  // v4: Navigation & States
+  navValueLab: string;
+  statusInitiated: string;
+  statusPending: string;
+  statusConfirmed: string;
+  statusFailed: string;
+  statusReversed: string;
+  statusNeedsReconciliation: string;
+
+  // v4: Exception classes
+  classLateReversal: string;
+  classUnknownOutcome: string;
+
+  // v4: Bank scope & Feed recovery
+  bankScopeLabel: string;
+  bankScopeAll: string;
+  bankScopeBank1: string;
+  bankScopeBank2: string;
+  bankScopeBank3: string;
+  bankScopeSeparationTest: string;
+  feedDownSwitch: string;
+  feedDownActiveNotice: string;
+  feedNormalNotice: string;
+  feedReplayCatchup: string;
+
+  // v4: Value Lab
+  valueLabTitle: string;
+  valueLabSubtitle: string;
+  valueLabTopLine: string;
+  valueLabHonestLimit: string;
+  tabBankLens: string;
+  tabMerchantLens: string;
+  tabOperatorLens: string;
+  tabSystemLens: string;
+  bankLensHeading: string;
+  bankAlreadySolvesItLabel: string;
+  bankAlreadySolvesItNote: string;
+  merchantLensHeading: string;
+  merchantAlreadyCopesLabel: string;
+  merchantAlreadyCopesNote: string;
+  operatorLensHeading: string;
+  operatorSwitchingValue: string;
+  operatorZeroBankMonths: string;
+  systemLensHeading: string;
+  systemInclusionLimitNote: string;
+  challengeModeTitle: string;
+  challengeModeFooter: string;
 }

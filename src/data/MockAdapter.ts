@@ -11,6 +11,7 @@ import {
   AuditEntry,
   PaymentRailId,
   ExceptionResolutionStatus,
+  BankId,
 } from '../domain/types';
 import { runReconciliation, MatchingResult } from '../domain/reconciliation';
 import { EventSourceAdapter, EventFilter, CapturePayload } from './EventSourceAdapter';
@@ -33,6 +34,8 @@ export class MockAdapter implements EventSourceAdapter {
   private exceptions: ExceptionRecord[] = [];
   private prng: DeterministicPRNG;
   private txCounter: number = 8950;
+  private isFeedDown: boolean = false;
+  private bufferedStatements: StatementRow[] = [];
 
   constructor(seed: number = 77123) {
     this.prng = new DeterministicPRNG(seed);
@@ -54,6 +57,9 @@ export class MockAdapter implements EventSourceAdapter {
     }
     if (filter?.railId) {
       result = result.filter((e) => e.railId === filter.railId);
+    }
+    if (filter?.bankId) {
+      result = result.filter((e) => e.bankId === filter.bankId);
     }
     if (filter?.status) {
       result = result.filter((e) => e.status === filter.status);
@@ -80,9 +86,38 @@ export class MockAdapter implements EventSourceAdapter {
     });
   }
 
+  async listExceptions(filter?: { bankId?: BankId }): Promise<ExceptionRecord[]> {
+    if (filter?.bankId) {
+      return this.exceptions.filter((e) => e.bankId === filter.bankId);
+    }
+    return [...this.exceptions];
+  }
+
+  async setProviderFeedDown(down: boolean): Promise<void> {
+    this.isFeedDown = down;
+    if (!down && this.bufferedStatements.length > 0) {
+      // Feed restored: replay buffered statements and re-reconcile
+      this.statements.unshift(...this.bufferedStatements);
+      this.bufferedStatements = [];
+      await this.reconcileBatch();
+    }
+  }
+
+  async isProviderFeedDown(): Promise<boolean> {
+    return this.isFeedDown;
+  }
+
   async reconcileBatch(): Promise<MatchingResult> {
     const result = runReconciliation(this.events, this.statements, this.exceptions);
     this.exceptions = result.exceptions;
+    // Mark matched events as CONFIRMED
+    for (const pair of result.matchedPairs) {
+      const ev = this.events.find((e) => e.id === pair.event.id);
+      if (ev && ev.status !== 'REVERSED') {
+        ev.status = 'CONFIRMED';
+        ev.providerRef = pair.statement.id;
+      }
+    }
     return result;
   }
 
@@ -93,13 +128,14 @@ export class MockAdapter implements EventSourceAdapter {
       txRef: ref,
       amountCents: payload.amountCents,
       railId: payload.railId,
+      bankId: payload.bankId || 'bank-1',
       tillId: payload.tillId,
       tillName: payload.tillName,
       cashierId: payload.cashierId,
       cashierName: payload.cashierName,
       createdAt: new Date().toISOString(),
-      // A capture never shows "paid" without a match; before a match it reads "awaiting_provider" (or "captured" for cash)
-      status: payload.railId === 'cash' ? 'captured' : 'awaiting_provider',
+      // A capture never shows CONFIRMED without an external statement match
+      status: 'PENDING',
       offlineQueued: payload.isOffline || false,
     };
 
@@ -134,7 +170,7 @@ export class MockAdapter implements EventSourceAdapter {
       throw new Error(`Event ${id} not found.`);
     }
 
-    ev.status = 'voided';
+    ev.status = 'FAILED';
     ev.voidReason = reason;
     ev.voidedAt = new Date().toISOString();
     ev.voidedBy = actor.name;
@@ -179,7 +215,7 @@ export class MockAdapter implements EventSourceAdapter {
     if (resolution.status === 'resolved' && ex.eventId) {
       const ev = this.events.find((e) => e.id === ex.eventId);
       if (ev) {
-        ev.status = 'matched';
+        ev.status = 'CONFIRMED';
       }
     }
 
@@ -294,12 +330,13 @@ export class MockAdapter implements EventSourceAdapter {
         txRef: ref,
         amountCents: item.payload.amountCents,
         railId: item.payload.railId,
+        bankId: item.payload.bankId || 'bank-1',
         tillId: item.payload.tillId,
         tillName: item.payload.tillName,
         cashierId: item.payload.cashierId,
         cashierName: item.payload.cashierName,
         createdAt: item.queuedAt,
-        status: item.payload.railId === 'cash' ? 'captured' : 'awaiting_provider',
+        status: 'PENDING',
         offlineQueued: true,
         replayedAt: new Date().toISOString(),
       };
@@ -325,10 +362,12 @@ export class MockAdapter implements EventSourceAdapter {
 
   async simulateIncomingEvents(count: number = 2): Promise<number> {
     const rails: PaymentRailId[] = ['wallet_a', 'bank_b', 'interop_qr', 'card_tap'];
+    const bankIds: BankId[] = ['bank-1', 'bank-2', 'bank-3'];
     const tills = SEEDED_TILLS;
 
     for (let i = 0; i < count; i++) {
       const rail = this.prng.pick(rails);
+      const bankId = this.prng.pick(bankIds);
       const till = this.prng.pick(tills);
       const amountCents = this.prng.nextInt(150, 4800) * 100; // between 150.00 and 4800.00 ETB
       const ref = `TXR-2026-${++this.txCounter}`;
@@ -338,15 +377,21 @@ export class MockAdapter implements EventSourceAdapter {
         txRef: ref,
         amountCents,
         railId: rail,
+        bankId,
         tillId: till.id,
         tillName: till.name,
         cashierId: till.assignedCashierId,
         cashierName: till.assignedCashierName,
         createdAt: new Date().toISOString(),
-        status: 'awaiting_provider',
+        status: 'PENDING',
       };
 
       this.events.unshift(newEv);
+
+      // If feed is DOWN, statement rows stop arriving and events pile up as PENDING!
+      if (this.isFeedDown) {
+        continue;
+      }
 
       // In 70% of cases, also simulate corresponding matching statement row
       if (this.prng.next() < 0.7) {
@@ -356,6 +401,7 @@ export class MockAdapter implements EventSourceAdapter {
           statementDate: new Date().toISOString().slice(0, 10),
           statementTime: stmtTime,
           railId: rail,
+          bankId,
           externalRef: ref,
           amountCents,
           feeCents: Math.round(amountCents * 0.005),
@@ -363,7 +409,7 @@ export class MockAdapter implements EventSourceAdapter {
           rawPayloadRef: `RAW-SIM-${Date.now()}`,
         };
         this.statements.unshift(stmtRow);
-        newEv.status = 'matched';
+        newEv.status = 'CONFIRMED';
         newEv.providerRef = stmtRow.id;
       }
     }
@@ -371,12 +417,18 @@ export class MockAdapter implements EventSourceAdapter {
     return count;
   }
 
-  async simulateIncomingStatement(txRef: string, amountCents: number, railId: PaymentRailId): Promise<StatementRow> {
+  async simulateIncomingStatement(
+    txRef: string,
+    amountCents: number,
+    railId: PaymentRailId,
+    bankId: BankId = 'bank-1'
+  ): Promise<StatementRow> {
     const stmtRow: StatementRow = {
       id: `st-inbound-${Date.now()}`,
       statementDate: new Date().toISOString().slice(0, 10),
       statementTime: new Date().toTimeString().slice(0, 8),
       railId,
+      bankId,
       externalRef: txRef,
       amountCents,
       feeCents: Math.round(amountCents * 0.005),
@@ -384,12 +436,18 @@ export class MockAdapter implements EventSourceAdapter {
       rawPayloadRef: `RAW-SIM-${Date.now()}`,
     };
 
+    if (this.isFeedDown) {
+      // Buffer statements during outage
+      this.bufferedStatements.push(stmtRow);
+      return stmtRow;
+    }
+
     this.statements.unshift(stmtRow);
 
     // Update event if matches
     const matchingEv = this.events.find((e) => e.txRef === txRef && e.amountCents === amountCents);
-    if (matchingEv) {
-      matchingEv.status = 'matched';
+    if (matchingEv && matchingEv.status !== 'REVERSED') {
+      matchingEv.status = 'CONFIRMED';
       matchingEv.providerRef = stmtRow.id;
     }
 

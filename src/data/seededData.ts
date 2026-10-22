@@ -39,12 +39,13 @@ export const INITIAL_LEDGER_EVENTS: LedgerEvent[] = [
     txRef: 'TXR-2026-8941',
     amountCents: 145000, // ETB 1,450.00
     railId: 'wallet_a',
+    bankId: 'bank-1',
     tillId: 'till-01',
     tillName: 'Till 01 - Main Counter',
     cashierId: 'emp-01',
     cashierName: 'Alem T.',
     createdAt: '2026-10-21T08:15:30Z',
-    status: 'matched',
+    status: 'CONFIRMED',
     providerRef: 'WAL-STMT-9901',
   },
   {
@@ -52,12 +53,13 @@ export const INITIAL_LEDGER_EVENTS: LedgerEvent[] = [
     txRef: 'TXR-2026-8942',
     amountCents: 45000, // ETB 450.00
     railId: 'interop_qr',
+    bankId: 'bank-2',
     tillId: 'till-01',
     tillName: 'Till 01 - Main Counter',
     cashierId: 'emp-01',
     cashierName: 'Alem T.',
     createdAt: '2026-10-21T08:24:10Z',
-    status: 'matched',
+    status: 'CONFIRMED',
     providerRef: 'IQR-STMT-9902',
   },
   {
@@ -65,12 +67,13 @@ export const INITIAL_LEDGER_EVENTS: LedgerEvent[] = [
     txRef: 'TXR-2026-8943',
     amountCents: 280000, // ETB 2,800.00
     railId: 'bank_b',
+    bankId: 'bank-1',
     tillId: 'till-02',
     tillName: 'Till 02 - Express Register',
     cashierId: 'emp-02',
     cashierName: 'Bereket D.',
     createdAt: '2026-10-21T08:42:00Z',
-    status: 'matched',
+    status: 'CONFIRMED',
     providerRef: 'BNK-STMT-9903',
   },
   {
@@ -78,12 +81,13 @@ export const INITIAL_LEDGER_EVENTS: LedgerEvent[] = [
     txRef: 'TXR-2026-8944',
     amountCents: 85000, // ETB 850.00
     railId: 'card_tap',
+    bankId: 'bank-3',
     tillId: 'till-01',
     tillName: 'Till 01 - Main Counter',
     cashierId: 'emp-01',
     cashierName: 'Alem T.',
     createdAt: '2026-10-21T09:05:15Z',
-    status: 'matched',
+    status: 'CONFIRMED',
     providerRef: 'CRD-STMT-9904',
   },
   {
@@ -91,12 +95,13 @@ export const INITIAL_LEDGER_EVENTS: LedgerEvent[] = [
     txRef: 'TXR-2026-8945',
     amountCents: 32000, // ETB 320.00 (Cash)
     railId: 'cash',
+    bankId: 'bank-1',
     tillId: 'till-01',
     tillName: 'Till 01 - Main Counter',
     cashierId: 'emp-01',
     cashierName: 'Alem T.',
     createdAt: '2026-10-21T09:12:00Z',
-    status: 'captured',
+    status: 'PENDING',
   },
   // Class 2: Missing at Provider
   {
@@ -104,12 +109,13 @@ export const INITIAL_LEDGER_EVENTS: LedgerEvent[] = [
     txRef: 'TXR-2026-8946',
     amountCents: 120000, // ETB 1,200.00
     railId: 'wallet_a',
+    bankId: 'bank-2',
     tillId: 'till-02',
     tillName: 'Till 02 - Express Register',
     cashierId: 'emp-02',
     cashierName: 'Bereket D.',
     createdAt: '2026-10-21T09:30:00Z',
-    status: 'exception',
+    status: 'NEEDS_RECONCILIATION',
     notes: 'Captured at till, customer phone showed confirmation, but no statement row received.',
   },
   // Class 4: Amount Mismatch (Till has 750.00, Statement has 700.00)
@@ -118,12 +124,13 @@ export const INITIAL_LEDGER_EVENTS: LedgerEvent[] = [
     txRef: 'TXR-2026-8947',
     amountCents: 75000, // ETB 750.00
     railId: 'interop_qr',
+    bankId: 'bank-1',
     tillId: 'till-03',
     tillName: 'Till 03 - Patio / Service Bar',
     cashierId: 'emp-03',
     cashierName: 'Chaltu K.',
     createdAt: '2026-10-21T09:45:00Z',
-    status: 'exception',
+    status: 'NEEDS_RECONCILIATION',
   },
   // Class 5: Duplicate at Till
   {
@@ -131,24 +138,26 @@ export const INITIAL_LEDGER_EVENTS: LedgerEvent[] = [
     txRef: 'TXR-2026-8948',
     amountCents: 50000, // ETB 500.00
     railId: 'bank_b',
+    bankId: 'bank-2',
     tillId: 'till-01',
     tillName: 'Till 01 - Main Counter',
     cashierId: 'emp-01',
     cashierName: 'Alem T.',
     createdAt: '2026-10-21T10:02:10Z',
-    status: 'exception',
+    status: 'NEEDS_RECONCILIATION',
   },
   {
     id: 'ev-108b',
     txRef: 'TXR-2026-8948',
     amountCents: 50000, // ETB 500.00
     railId: 'bank_b',
+    bankId: 'bank-2',
     tillId: 'till-01',
     tillName: 'Till 01 - Main Counter',
     cashierId: 'emp-01',
     cashierName: 'Alem T.',
     createdAt: '2026-10-21T10:02:14Z',
-    status: 'exception',
+    status: 'NEEDS_RECONCILIATION',
   },
   // Pending match
   {
@@ -156,12 +165,46 @@ export const INITIAL_LEDGER_EVENTS: LedgerEvent[] = [
     txRef: 'TXR-2026-8949',
     amountCents: 360000, // ETB 3,600.00
     railId: 'bank_b',
+    bankId: 'bank-1',
     tillId: 'till-02',
     tillName: 'Till 02 - Express Register',
     cashierId: 'emp-02',
     cashierName: 'Bereket D.',
     createdAt: '2026-10-21T10:15:00Z',
-    status: 'awaiting_provider',
+    status: 'PENDING',
+  },
+  // New Case 1: Late Reversal (Confirmed event later reversed by provider)
+  {
+    id: 'ev-110',
+    txRef: 'TXR-2026-8950',
+    amountCents: 190000, // ETB 1,900.00
+    railId: 'wallet_a',
+    bankId: 'bank-1',
+    tillId: 'till-01',
+    tillName: 'Till 01 - Main Counter',
+    cashierId: 'emp-01',
+    cashierName: 'Alem T.',
+    createdAt: '2026-10-21T07:45:00Z',
+    status: 'REVERSED',
+    isLateReversal: true,
+    providerRef: 'WAL-REV-9910',
+    notes: 'Initially confirmed at till, but reversed by provider 45 minutes later.',
+  },
+  // New Case 2: Unknown Outcome (Request sent, no answer, timed out to NEEDS_RECONCILIATION)
+  {
+    id: 'ev-111',
+    txRef: 'TXR-2026-8951',
+    amountCents: 62000, // ETB 620.00
+    railId: 'card_tap',
+    bankId: 'bank-2',
+    tillId: 'till-03',
+    tillName: 'Till 03 - Patio / Service Bar',
+    cashierId: 'emp-03',
+    cashierName: 'Chaltu K.',
+    createdAt: '2026-10-21T08:00:00Z',
+    status: 'NEEDS_RECONCILIATION',
+    isUnknownOutcome: true,
+    notes: 'Terminal sent capture request; connection timed out with no response from switch after 30 min.',
   },
 ];
 
@@ -171,6 +214,7 @@ export const INITIAL_STATEMENT_ROWS: StatementRow[] = [
     statementDate: '2026-10-21',
     statementTime: '08:15:35',
     railId: 'wallet_a',
+    bankId: 'bank-1',
     externalRef: 'TXR-2026-8941',
     amountCents: 145000,
     feeCents: 725,
@@ -182,6 +226,7 @@ export const INITIAL_STATEMENT_ROWS: StatementRow[] = [
     statementDate: '2026-10-21',
     statementTime: '08:24:15',
     railId: 'interop_qr',
+    bankId: 'bank-2',
     externalRef: 'TXR-2026-8942',
     amountCents: 45000,
     feeCents: 135,
@@ -193,6 +238,7 @@ export const INITIAL_STATEMENT_ROWS: StatementRow[] = [
     statementDate: '2026-10-21',
     statementTime: '08:42:05',
     railId: 'bank_b',
+    bankId: 'bank-1',
     externalRef: 'TXR-2026-8943',
     amountCents: 280000,
     feeCents: 560,
@@ -204,6 +250,7 @@ export const INITIAL_STATEMENT_ROWS: StatementRow[] = [
     statementDate: '2026-10-21',
     statementTime: '09:05:22',
     railId: 'card_tap',
+    bankId: 'bank-3',
     externalRef: 'TXR-2026-8944',
     amountCents: 85000,
     feeCents: 1020,
@@ -216,6 +263,7 @@ export const INITIAL_STATEMENT_ROWS: StatementRow[] = [
     statementDate: '2026-10-21',
     statementTime: '09:45:10',
     railId: 'interop_qr',
+    bankId: 'bank-1',
     externalRef: 'TXR-2026-8947',
     amountCents: 70000, // ETB 700.00
     feeCents: 210,
@@ -228,11 +276,26 @@ export const INITIAL_STATEMENT_ROWS: StatementRow[] = [
     statementDate: '2026-10-21',
     statementTime: '10:05:00',
     railId: 'bank_b',
+    bankId: 'bank-2',
     externalRef: 'UNREC-BNK-9811',
     amountCents: 185000, // ETB 1,850.00
     feeCents: 370,
     payerMasked: 'ACCT-***-3381',
     rawPayloadRef: 'RAW-BATCH-20261021-03',
+  },
+  // Late Reversal Statement for ev-110
+  {
+    id: 'st-07',
+    statementDate: '2026-10-21',
+    statementTime: '08:30:00',
+    railId: 'wallet_a',
+    bankId: 'bank-1',
+    externalRef: 'TXR-2026-8950',
+    amountCents: 190000,
+    feeCents: 0,
+    isReversal: true,
+    payerMasked: '+251-91-***-8800',
+    rawPayloadRef: 'RAW-BATCH-20261021-04-REV',
   },
 ];
 

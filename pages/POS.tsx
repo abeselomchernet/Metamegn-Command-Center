@@ -204,18 +204,18 @@ export const POS: React.FC = () => {
                       </div>
                       <span
                         className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded mt-1 ${
-                          ev.status === 'matched'
+                          ev.status === 'CONFIRMED'
                             ? 'bg-emerald-100 text-emerald-800'
-                            : ev.status === 'awaiting_provider'
+                            : ev.status === 'PENDING'
                             ? 'bg-amber-100 text-amber-800'
+                            : ev.status === 'REVERSED'
+                            ? 'bg-purple-100 text-purple-800'
+                            : ev.status === 'FAILED'
+                            ? 'bg-rose-100 text-rose-800'
                             : 'bg-slate-200 text-slate-700'
                         }`}
                       >
-                        {ev.status === 'matched'
-                          ? 'Matched'
-                          : ev.status === 'awaiting_provider'
-                          ? 'Awaiting Report'
-                          : 'Captured'}
+                        {ev.status}
                       </span>
                     </div>
                   </div>

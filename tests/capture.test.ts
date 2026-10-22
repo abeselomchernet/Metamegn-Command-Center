@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { MockAdapter } from '../src/data/MockAdapter';
 
 describe('Capture State & Seam Invariants', () => {
-  it('records transactions into the ledger as "awaiting_provider" before any statement match', async () => {
+  it('records transactions into the ledger as "PENDING" before any statement match', async () => {
     const adapter = new MockAdapter(9911);
 
     const event = await adapter.captureEvent({
@@ -16,8 +16,8 @@ describe('Capture State & Seam Invariants', () => {
 
     expect(event.amountCents).toBe(185000);
     expect(event.railId).toBe('wallet_a');
-    // Invariant: capture never shows "paid" without a match; before a match it reads "awaiting_provider"
-    expect(event.status).toBe('awaiting_provider');
+    // Invariant: capture never shows "CONFIRMED" without a match; before a match it reads "PENDING"
+    expect(event.status).toBe('PENDING');
     expect(event.providerRef).toBeUndefined();
 
     // Verify it appears in listed events
@@ -63,7 +63,7 @@ describe('Capture State & Seam Invariants', () => {
       name: 'Dawit M.',
     });
 
-    expect(voided.status).toBe('voided');
+    expect(voided.status).toBe('FAILED');
     expect(voided.voidReason).toBe('Customer cancelled order before card tap');
 
     // Check audit log

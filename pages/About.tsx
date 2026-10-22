@@ -73,6 +73,10 @@ export const About: React.FC = () => {
           This demo illustrates <strong>Option B (Operate + Connect first)</strong> of five options kept open under the research methodology. See the full comparison on the{' '}
           <Link to="/options" className="text-blue-800 underline font-semibold hover:text-blue-950">
             Options explorer
+          </Link>{' '}
+          and simulate economic sensitivity and "what you would have to believe" break-even on the{' '}
+          <Link to="/value" className="text-blue-800 underline font-semibold hover:text-blue-950">
+            Value Lab
           </Link>.
         </p>
       </div>
@@ -117,8 +121,8 @@ export const About: React.FC = () => {
             <span>In-Scope (What It Illustrates)</span>
           </div>
           <ul className="text-xs text-slate-600 space-y-2 list-disc list-inside">
-            <li>Immutable recording of POS merchant transaction events.</li>
-            <li>5-class automated reconciliation matching against external statement rows.</li>
+            <li>Immutable recording of POS merchant transaction events across six lifecycle states.</li>
+            <li>Automated reconciliation matching against external provider statement rows with ageing.</li>
             <li>Routing and triaging of open discrepancy exceptions to supervisors.</li>
             <li>Low-connectivity offline queueing and duplicate-checked replay.</li>
             <li>Shift handover cash counting and variance calculation without fund transfers.</li>

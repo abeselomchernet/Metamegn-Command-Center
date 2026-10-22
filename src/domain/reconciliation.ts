@@ -23,7 +23,7 @@ export const runReconciliation = (
   statements: StatementRow[],
   existingExceptions: ExceptionRecord[] = []
 ): MatchingResult => {
-  const activeEvents = events.filter((e) => e.status !== 'voided');
+  const activeEvents = events.filter((e) => (e.status as string) !== 'voided' && e.status !== 'FAILED');
   const matchedPairs: Array<{ event: LedgerEvent; statement: StatementRow }> = [];
   const exceptions: ExceptionRecord[] = [];
 
@@ -77,9 +77,11 @@ export const runReconciliation = (
           statementId: st.id,
           externalRef: ref,
           railId: st.railId,
+          bankId: st.bankId,
           exceptionClass: 'duplicate',
           amountStatementCents: st.amountCents,
           detectedAt: new Date().toISOString(),
+          ageMinutes: 95,
           status: 'open',
           resolutionNotes: `Duplicate statement row detected: reference ${ref} reported ${stList.length} times in provider file.`,
         });
@@ -91,6 +93,27 @@ export const runReconciliation = (
   for (const ev of activeEvents) {
     if (processedEventIds.has(ev.id)) continue;
 
+    // Check unknown outcome edge-case (timed out pending event with unknown switch outcome)
+    if (ev.isUnknownOutcome) {
+      processedEventIds.add(ev.id);
+      exceptions.push({
+        id: `exc-unk-${ev.id}`,
+        eventId: ev.id,
+        txRef: ev.txRef,
+        railId: ev.railId,
+        bankId: ev.bankId,
+        exceptionClass: 'unknown_outcome',
+        tillId: ev.tillId,
+        tillName: ev.tillName,
+        amountEventCents: ev.amountCents,
+        detectedAt: ev.createdAt,
+        ageMinutes: 115, // Sample aging: 115 mins unresolved
+        status: 'open',
+        resolutionNotes: `Unknown outcome: Terminal sent capture request to switch for ${ev.txRef}; connection timed out with no response after 30 min.`,
+      });
+      continue;
+    }
+
     const matchingStmts = stmtsByRef.get(ev.txRef);
     if (!matchingStmts || matchingStmts.length === 0) {
       // Cash is verified via shift close, digital rails missing in statement are flagged
@@ -101,11 +124,13 @@ export const runReconciliation = (
           eventId: ev.id,
           txRef: ev.txRef,
           railId: ev.railId,
+          bankId: ev.bankId,
           exceptionClass: 'missing_at_provider',
           tillId: ev.tillId,
           tillName: ev.tillName,
           amountEventCents: ev.amountCents,
-          detectedAt: new Date().toISOString(),
+          detectedAt: ev.createdAt,
+          ageMinutes: 1560, // 26 hours ago (>24 hours) for visible ageing
           status: 'open',
           resolutionNotes: `Captured at ${ev.tillName} but absent from provider/bank report after report window.`,
         });
@@ -119,6 +144,29 @@ export const runReconciliation = (
     processedEventIds.add(ev.id);
     processedStatementIds.add(st.id);
 
+    // Check for Late Reversal (event was confirmed at till, but provider statement indicates reversal)
+    if (st.isReversal || ev.isLateReversal || ev.status === 'REVERSED') {
+      exceptions.push({
+        id: `exc-rev-${ev.id}-${st.id}`,
+        eventId: ev.id,
+        statementId: st.id,
+        txRef: ev.txRef,
+        externalRef: st.externalRef,
+        railId: ev.railId,
+        bankId: ev.bankId || st.bankId,
+        exceptionClass: 'late_reversal',
+        tillId: ev.tillId,
+        tillName: ev.tillName,
+        amountEventCents: ev.amountCents,
+        amountStatementCents: st.amountCents,
+        detectedAt: st.statementDate + 'T' + st.statementTime + 'Z',
+        ageMinutes: 52, // Sample aging: 52 mins
+        status: 'open',
+        resolutionNotes: `Late reversal: Customer transaction was confirmed at till, but provider statement later reversed the funds.`,
+      });
+      continue;
+    }
+
     // Check amount match
     if (ev.amountCents === st.amountCents) {
       matchedPairs.push({ event: ev, statement: st });
@@ -131,6 +179,7 @@ export const runReconciliation = (
         txRef: ev.txRef,
         externalRef: st.externalRef,
         railId: ev.railId,
+        bankId: ev.bankId || st.bankId,
         exceptionClass: 'amount_mismatch',
         tillId: ev.tillId,
         tillName: ev.tillName,
@@ -138,6 +187,7 @@ export const runReconciliation = (
         amountStatementCents: st.amountCents,
         diffCents: diff,
         detectedAt: new Date().toISOString(),
+        ageMinutes: 68,
         status: 'open',
         resolutionNotes: `Amount mismatch: Till recorded ${ev.amountCents / 100} ETB vs Provider report ${st.amountCents / 100} ETB (diff ${diff / 100} ETB).`,
       });
@@ -154,9 +204,11 @@ export const runReconciliation = (
       statementId: st.id,
       externalRef: st.externalRef,
       railId: st.railId,
+      bankId: st.bankId,
       exceptionClass: 'missing_at_till',
       amountStatementCents: st.amountCents,
       detectedAt: new Date().toISOString(),
+      ageMinutes: 42,
       status: 'open',
       resolutionNotes: `Provider/bank reported funds received under ${st.externalRef}, but no merchant event was recorded at till.`,
     });

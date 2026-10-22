@@ -69,18 +69,36 @@ export const PAYMENT_RAILS: Record<PaymentRailId, RailConfig> = {
   },
 };
 
-export type LedgerStatus =
-  | 'captured'
-  | 'awaiting_provider'
-  | 'matched'
-  | 'exception'
-  | 'voided';
+export const TRANSACTION_STATES = [
+  'INITIATED',
+  'PENDING',
+  'CONFIRMED',
+  'FAILED',
+  'REVERSED',
+  'NEEDS_RECONCILIATION',
+] as const;
+
+export type LedgerStatus = (typeof TRANSACTION_STATES)[number];
+
+export type BankId = 'bank-1' | 'bank-2' | 'bank-3';
+
+export interface BankScopeConfig {
+  id: BankId;
+  name: string;
+}
+
+export const NEUTRAL_BANKS: Record<BankId, BankScopeConfig> = {
+  'bank-1': { id: 'bank-1', name: 'Bank 1' },
+  'bank-2': { id: 'bank-2', name: 'Bank 2' },
+  'bank-3': { id: 'bank-3', name: 'Bank 3' },
+};
 
 export interface LedgerEvent {
   id: string;
   txRef: string;
   amountCents: number;
   railId: PaymentRailId;
+  bankId: BankId;
   tillId: string;
   tillName: string;
   cashierId: string;
@@ -94,6 +112,8 @@ export interface LedgerEvent {
   offlineQueued?: boolean;
   replayedAt?: string;
   notes?: string;
+  isLateReversal?: boolean;
+  isUnknownOutcome?: boolean;
 }
 
 export interface StatementRow {
@@ -101,11 +121,13 @@ export interface StatementRow {
   statementDate: string; // YYYY-MM-DD
   statementTime: string; // HH:mm:ss
   railId: PaymentRailId;
+  bankId?: BankId;
   externalRef: string;
   amountCents: number;
   feeCents: number;
   payerMasked?: string;
   rawPayloadRef: string;
+  isReversal?: boolean;
 }
 
 export type ExceptionClass =
@@ -113,7 +135,9 @@ export type ExceptionClass =
   | 'missing_at_provider'
   | 'missing_at_till'
   | 'amount_mismatch'
-  | 'duplicate';
+  | 'duplicate'
+  | 'late_reversal'
+  | 'unknown_outcome';
 
 export type ExceptionResolutionStatus = 'open' | 'investigating' | 'resolved' | 'voided';
 
@@ -124,6 +148,7 @@ export interface ExceptionRecord {
   txRef?: string;
   externalRef?: string;
   railId: PaymentRailId;
+  bankId?: BankId;
   exceptionClass: ExceptionClass;
   tillId?: string;
   tillName?: string;
@@ -131,6 +156,7 @@ export interface ExceptionRecord {
   amountStatementCents?: number;
   diffCents?: number;
   detectedAt: string;
+  ageMinutes?: number;
   status: ExceptionResolutionStatus;
   assignedTo?: string;
   resolutionNotes?: string;

@@ -12,6 +12,7 @@ import {
   AuditEntry,
   PaymentRailId,
   ExceptionResolutionStatus,
+  BankId,
 } from '../domain/types';
 import { MatchingResult } from '../domain/reconciliation';
 import { Role } from '../domain/permissions';
@@ -19,6 +20,7 @@ import { Role } from '../domain/permissions';
 export interface EventFilter {
   tillId?: string;
   railId?: PaymentRailId;
+  bankId?: BankId;
   status?: string;
   searchQuery?: string;
 }
@@ -26,6 +28,7 @@ export interface EventFilter {
 export interface CapturePayload {
   amountCents: number;
   railId: PaymentRailId;
+  bankId?: BankId;
   tillId: string;
   tillName: string;
   cashierId: string;
@@ -37,6 +40,7 @@ export interface CapturePayload {
 export interface EventSourceAdapter {
   listEvents(filter?: EventFilter): Promise<LedgerEvent[]>;
   listStatements(): Promise<StatementRow[]>;
+  listExceptions(filter?: { bankId?: BankId }): Promise<ExceptionRecord[]>;
   reconcileBatch(): Promise<MatchingResult>;
   captureEvent(payload: CapturePayload): Promise<LedgerEvent>;
   voidEvent(id: string, reason: string, actor: { role: Role; name: string }): Promise<LedgerEvent>;
@@ -50,5 +54,7 @@ export interface EventSourceAdapter {
   listAuditLog(): Promise<AuditEntry[]>;
   replayOfflineQueue(): Promise<{ replayedCount: number; duplicateCount: number }>;
   simulateIncomingEvents(count?: number): Promise<number>;
-  simulateIncomingStatement(txRef: string, amountCents: number, railId: PaymentRailId): Promise<StatementRow>;
+  simulateIncomingStatement(txRef: string, amountCents: number, railId: PaymentRailId, bankId?: BankId): Promise<StatementRow>;
+  setProviderFeedDown(down: boolean): Promise<void>;
+  isProviderFeedDown(): Promise<boolean>;
 }

@@ -138,4 +138,52 @@ export const enTranslations: Translations = {
   condition3: 'If a partner\'s total cost beats a build while obligations stay covered, then D becomes the first option to test.',
   condition4: 'If no bank commits recurring fees and there is no positive contribution, then E becomes the first option to test.',
   condition5: 'If at least two banks sign common modular economics, then a phased path to A is reconsidered.',
+
+  // v4: Navigation & States
+  navValueLab: 'Value Lab',
+  statusInitiated: 'INITIATED',
+  statusPending: 'PENDING',
+  statusConfirmed: 'CONFIRMED',
+  statusFailed: 'FAILED',
+  statusReversed: 'REVERSED',
+  statusNeedsReconciliation: 'NEEDS_RECONCILIATION',
+
+  // v4: Exception classes
+  classLateReversal: 'Late Reversal',
+  classUnknownOutcome: 'Unknown Outcome',
+
+  // v4: Bank scope & Feed recovery
+  bankScopeLabel: 'Bank Scope View',
+  bankScopeAll: 'All Banks (Aggregated)',
+  bankScopeBank1: 'View as Bank 1',
+  bankScopeBank2: 'View as Bank 2',
+  bankScopeBank3: 'View as Bank 3',
+  bankScopeSeparationTest: 'Multi-Bank Separation Verification',
+  feedDownSwitch: 'Provider Feed Down Simulator',
+  feedDownActiveNotice: 'Provider feed is DOWN: statement rows halted. Events accumulating in PENDING status.',
+  feedNormalNotice: 'Provider feed is ONLINE: statements arriving normally.',
+  feedReplayCatchup: 'Restore Feed & Replay Catch-up',
+
+  // v4: Value Lab
+  valueLabTitle: 'Value Lab: Simulation & Sensitivity',
+  valueLabSubtitle: 'Economic mechanics and "what you would have to believe" break-even analysis.',
+  valueLabTopLine: 'A simulation on placeholder inputs. It shows effects and sensitivity, not proof that anyone will pay. Replace every placeholder with a measured figure before drawing any conclusion.',
+  valueLabHonestLimit: 'A simulation on sample data cannot show that anyone will buy. It shows effects that follow from the mechanics, sensitivity to inputs, and which numbers must be measured in field interviews.',
+  tabBankLens: 'Bank Lens',
+  tabMerchantLens: 'Merchant Lens',
+  tabOperatorLens: 'Operator Lens',
+  tabSystemLens: 'System & Inclusion Lens',
+  bankLensHeading: 'What Does the Bank Get?',
+  bankAlreadySolvesItLabel: 'Bank already solves it internally',
+  bankAlreadySolvesItNote: "If the bank's own process is already good, there is nothing to buy.",
+  merchantLensHeading: 'What Does the Merchant Get?',
+  merchantAlreadyCopesLabel: 'Merchant already copes (paper register, few disputes)',
+  merchantAlreadyCopesNote: 'The merchant gains only if the record is trusted, simple and costs less than the time it saves.',
+  operatorLensHeading: 'What Does the Operator Carry?',
+  operatorSwitchingValue: 'Switching Value Analysis',
+  operatorZeroBankMonths: 'Cost Accrual in Zero-Bank Runway Months',
+  systemLensHeading: 'What Could Change Beyond the Parties?',
+  systemInclusionLimitNote: 'Inclusion is the reason to care, not an outcome the demo can show.',
+  challengeModeTitle: 'How This Could Be Wrong (Challenge Mode)',
+  challengeModeFooter: 'Negative findings are recorded, never excluded.',
 };

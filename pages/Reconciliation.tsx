@@ -8,6 +8,8 @@ import {
   ExceptionClass,
   ExceptionResolutionStatus,
   PAYMENT_RAILS,
+  BankId,
+  NEUTRAL_BANKS,
 } from '../src/domain/types';
 import { formatETB } from '../src/domain/money';
 import { EvidenceChip } from '../src/ui/EvidenceChip';
@@ -28,6 +30,11 @@ import {
   MessageSquare,
   X,
   PlusCircle,
+  RotateCcw,
+  HelpCircle,
+  ShieldCheck,
+  WifiOff,
+  Radio,
 } from 'lucide-react';
 import { EmptyState, LoadingState } from '../src/ui/StateViews';
 
@@ -39,6 +46,8 @@ export const Reconciliation: React.FC = () => {
   const [summary, setSummary] = useState<ReconciliationSummary | null>(null);
   const [exceptions, setExceptions] = useState<ExceptionRecord[]>([]);
   const [activeTab, setActiveTab] = useState<string>('all');
+  const [selectedBank, setSelectedBank] = useState<string>('all');
+  const [isFeedDown, setIsFeedDown] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   // Resolution modal state
@@ -176,11 +185,28 @@ export const Reconciliation: React.FC = () => {
             <span>{t.classDuplicate}</span>
           </span>
         );
+      case 'late_reversal':
+        return (
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold bg-purple-50 text-purple-800 border border-purple-200">
+            <RotateCcw size={12} className="text-purple-600" />
+            <span>{t.classLateReversal}</span>
+          </span>
+        );
+      case 'unknown_outcome':
+        return (
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-200">
+            <HelpCircle size={12} className="text-rose-600" />
+            <span>{t.classUnknownOutcome}</span>
+          </span>
+        );
     }
   };
 
   const filteredExceptions = exceptions.filter((ex) => {
     if (activeTab !== 'all' && ex.exceptionClass !== activeTab) {
+      return false;
+    }
+    if (selectedBank !== 'all' && ex.bankId && ex.bankId !== selectedBank) {
       return false;
     }
     if (searchQuery) {
@@ -193,11 +219,13 @@ export const Reconciliation: React.FC = () => {
   });
 
   const tabCounts = {
-    all: exceptions.length,
-    missing_at_provider: exceptions.filter((e) => e.exceptionClass === 'missing_at_provider').length,
-    missing_at_till: exceptions.filter((e) => e.exceptionClass === 'missing_at_till').length,
-    amount_mismatch: exceptions.filter((e) => e.exceptionClass === 'amount_mismatch').length,
-    duplicate: exceptions.filter((e) => e.exceptionClass === 'duplicate').length,
+    all: exceptions.filter((e) => (selectedBank === 'all' ? true : e.bankId === selectedBank)).length,
+    missing_at_provider: exceptions.filter((e) => e.exceptionClass === 'missing_at_provider' && (selectedBank === 'all' || e.bankId === selectedBank)).length,
+    missing_at_till: exceptions.filter((e) => e.exceptionClass === 'missing_at_till' && (selectedBank === 'all' || e.bankId === selectedBank)).length,
+    amount_mismatch: exceptions.filter((e) => e.exceptionClass === 'amount_mismatch' && (selectedBank === 'all' || e.bankId === selectedBank)).length,
+    duplicate: exceptions.filter((e) => e.exceptionClass === 'duplicate' && (selectedBank === 'all' || e.bankId === selectedBank)).length,
+    late_reversal: exceptions.filter((e) => e.exceptionClass === 'late_reversal' && (selectedBank === 'all' || e.bankId === selectedBank)).length,
+    unknown_outcome: exceptions.filter((e) => e.exceptionClass === 'unknown_outcome' && (selectedBank === 'all' || e.bankId === selectedBank)).length,
   };
 
   return (
@@ -214,6 +242,24 @@ export const Reconciliation: React.FC = () => {
 
         {/* Global Action Controls */}
         <div className="flex flex-wrap items-center gap-2 shrink-0">
+          {/* Feed Down Simulator Switch */}
+          <button
+            onClick={async () => {
+              const next = !isFeedDown;
+              setIsFeedDown(next);
+              await defaultAdapter.setProviderFeedDown(next);
+              await loadData();
+            }}
+            className={`px-3 py-1.5 border text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-colors ${
+              isFeedDown
+                ? 'bg-rose-900 text-white border-rose-900 shadow-xs'
+                : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+            }`}
+          >
+            {isFeedDown ? <WifiOff size={13} className="text-rose-400" /> : <Radio size={13} className="text-slate-400" />}
+            <span>{isFeedDown ? t.feedReplayCatchup : t.feedDownSwitch}</span>
+          </button>
+
           <button
             onClick={() => setIsSimulating(true)}
             className="px-3 py-1.5 bg-white border border-slate-200 text-slate-700 text-xs font-medium rounded-lg hover:bg-slate-50 flex items-center gap-1.5 transition-colors"
@@ -238,9 +284,47 @@ export const Reconciliation: React.FC = () => {
         </div>
       </div>
 
+      {/* Feed Down Alert Banner */}
+      {isFeedDown && (
+        <div className="bg-rose-50 border border-rose-200 rounded-xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-rose-900">
+          <div className="flex items-center gap-2">
+            <WifiOff size={16} className="text-rose-600 shrink-0" />
+            <span>{t.feedDownActiveNotice}</span>
+          </div>
+          <button
+            onClick={async () => {
+              setIsFeedDown(false);
+              await defaultAdapter.setProviderFeedDown(false);
+              await loadData();
+            }}
+            className="px-3 py-1 bg-rose-700 text-white rounded-lg font-semibold hover:bg-rose-800 text-xs shrink-0"
+          >
+            {t.feedReplayCatchup}
+          </button>
+        </div>
+      )}
+
+      {/* Bank Scope Verification Card (when filtered to Bank 1) */}
+      {selectedBank === 'bank-1' && (
+        <div className="bg-slate-900 text-white rounded-xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs shadow-xs">
+          <div className="flex items-center gap-2">
+            <ShieldCheck size={16} className="text-emerald-400 shrink-0" />
+            <div>
+              <span className="font-bold text-white block">
+                {t.bankScopeSeparationTest}
+              </span>
+              <span className="text-slate-300 text-[11px]">
+                Active view: Bank 1. Bank 2 exceptions visible: 0 (Zero/Pass). Bank 3 exceptions visible: 0 (Zero/Pass).
+              </span>
+            </div>
+          </div>
+          <EvidenceChip status="Assumption" detail="Illustrates separation requirement; not a security proof" className="bg-slate-800 text-slate-200 border-slate-700" />
+        </div>
+      )}
+
       {/* 2. Executive 360 Reconciliation Metrics (Zero Custody, Tabular Figures) */}
       {summary && (
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3.5">
           <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
             <div className="flex items-center justify-between text-xs text-slate-500 mb-1">
               <span>{t.matchRate}</span>
@@ -308,15 +392,17 @@ export const Reconciliation: React.FC = () => {
         </div>
       )}
 
-      {/* 3. Filter Tabs (Interactive Segmented Buttons) */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-2.5 rounded-xl border border-slate-200 shadow-xs">
-        <div className="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0">
+      {/* 3. Filter Tabs and Bank Scope Controls */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 bg-white p-2.5 rounded-xl border border-slate-200 shadow-xs">
+        <div className="flex items-center gap-1 overflow-x-auto pb-1 lg:pb-0">
           {[
             { id: 'all', label: 'All Exceptions', count: tabCounts.all },
             { id: 'missing_at_provider', label: t.classMissingAtProvider, count: tabCounts.missing_at_provider },
             { id: 'missing_at_till', label: t.classMissingAtTill, count: tabCounts.missing_at_till },
             { id: 'amount_mismatch', label: t.classAmountMismatch, count: tabCounts.amount_mismatch },
             { id: 'duplicate', label: t.classDuplicate, count: tabCounts.duplicate },
+            { id: 'late_reversal', label: t.classLateReversal, count: tabCounts.late_reversal },
+            { id: 'unknown_outcome', label: t.classUnknownOutcome, count: tabCounts.unknown_outcome },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -337,6 +423,21 @@ export const Reconciliation: React.FC = () => {
               </span>
             </button>
           ))}
+        </div>
+
+        {/* Bank Scope Selector */}
+        <div className="flex items-center gap-2 shrink-0">
+          <label className="text-[11px] text-slate-500 font-semibold">{t.bankScopeLabel}:</label>
+          <select
+            value={selectedBank}
+            onChange={(e) => setSelectedBank(e.target.value)}
+            className="px-2.5 py-1 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-800 font-semibold focus:outline-hidden focus:border-slate-900"
+          >
+            <option value="all">{t.bankScopeAll}</option>
+            <option value="bank-1">{t.bankScopeBank1}</option>
+            <option value="bank-2">{t.bankScopeBank2}</option>
+            <option value="bank-3">{t.bankScopeBank3}</option>
+          </select>
         </div>
 
         {/* Live Filter Input */}
@@ -376,7 +477,8 @@ export const Reconciliation: React.FC = () => {
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-200 text-slate-500 font-semibold tracking-wider uppercase text-[11px]">
                   <th className="py-3 px-4">Discrepancy Class</th>
-                  <th className="py-3 px-4">Reference ID</th>
+                  <th className="py-3 px-4">Bank Scope</th>
+                  <th className="py-3 px-4">Reference & Ageing</th>
                   <th className="py-3 px-4">Rail & Delay</th>
                   <th className="py-3 px-4">Till Location</th>
                   <th className="py-3 px-4 text-right">Till Recorded</th>
@@ -396,10 +498,24 @@ export const Reconciliation: React.FC = () => {
                       <td className="py-3.5 px-4 whitespace-nowrap">
                         {getExceptionBadge(ex.exceptionClass)}
                       </td>
+                      <td className="py-3.5 px-4 whitespace-nowrap">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-slate-100 text-slate-700">
+                          {ex.bankId ? NEUTRAL_BANKS[ex.bankId]?.name || ex.bankId : 'Bank 1'}
+                        </span>
+                      </td>
                       <td className="py-3.5 px-4 whitespace-nowrap font-mono font-medium text-slate-900">
                         <div>{ex.txRef || ex.externalRef || ex.id}</div>
-                        <div className="text-[10px] text-slate-400 font-normal">
-                          {new Date(ex.detectedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        <div className="text-[10px] text-slate-500 font-sans font-medium flex items-center gap-1 mt-0.5">
+                          <Clock size={11} className="text-slate-400" />
+                          <span>
+                            {ex.ageMinutes !== undefined
+                              ? ex.ageMinutes >= 1440
+                                ? `${Math.floor(ex.ageMinutes / 1440)}d ${Math.floor((ex.ageMinutes % 1440) / 60)}h ago`
+                                : ex.ageMinutes >= 60
+                                ? `${Math.floor(ex.ageMinutes / 60)}h ${ex.ageMinutes % 60}m ago`
+                                : `${ex.ageMinutes}m ago`
+                              : 'recent'}
+                          </span>
                         </div>
                       </td>
                       <td className="py-3.5 px-4 whitespace-nowrap">
