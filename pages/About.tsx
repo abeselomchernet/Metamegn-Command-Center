@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { EvidenceChip } from '../src/ui/EvidenceChip';
 import { useTranslation } from '../src/i18n/I18nContext';
 import { ShieldAlert, CheckCircle2, XCircle, FileCode, Check, AlertCircle } from 'lucide-react';

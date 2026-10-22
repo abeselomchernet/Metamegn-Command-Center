@@ -25,6 +25,10 @@ All notable changes to the Metamegn illustration codebase are documented here.
   - **Complete Multilingual Support**: Translation keys in English (`en`), Amharic (`am`), and Afaan Oromoo (`om`) for all options copy, conditions, gate stages, and tour controls.
   - **Automated Vitest Suite**: Added `tests/options.test.ts` asserting data structures, non-empty fields, inquiry questions, exact wording for Options D/E/A/C, anti-bias invariants (zero score/rank keys), and cross-language translation parity.
 
+### Fixed
+- **`pages/About.tsx` Link Import**: Added missing `import { Link } from 'react-router-dom';` to prevent runtime crash on `/about`.
+- **Type-Check Gate at Build**: Updated the `"build"` npm script to `"tsc --noEmit && vite build"` so TypeScript compile-time checks run before bundling.
+
 ---
 
 ## [2.0.0] - 2026-10-21: Independent Acceptance 360 Illustration
