@@ -68,6 +68,12 @@ export const About: React.FC = () => {
         <p className="text-amber-800">
           It is an illustration of a research question, not a proposal, not a product, and not a PSS system. No content from any proposal document is used. All financial records, customer identifiers, statement rows, and numbers rendered are deterministic sample data.
         </p>
+        <p className="pt-1 text-slate-800 font-medium border-t border-amber-200/60">
+          This demo illustrates <strong>Option B (Operate + Connect first)</strong> of five options kept open under the research methodology. See the full comparison on the{' '}
+          <Link to="/options" className="text-blue-800 underline font-semibold hover:text-blue-950">
+            Options explorer
+          </Link>.
+        </p>
       </div>
 
       {/* 3. The Four Proof Gates (Prerequisites) */}

@@ -18,6 +18,7 @@ export const enTranslations: Translations = {
   navReports: 'Reports',
   navStaff: 'Staff & Audit',
   navAbout: 'About & Scope',
+  navOptions: 'Options',
 
   // Common
   allTills: 'All Tills',
@@ -101,4 +102,40 @@ export const enTranslations: Translations = {
   proof4Title: '4. Independent Security & Privacy Review',
   notStarted: 'Not started',
   whatIllustrationDoesNotShow: 'What This Illustration Strictly Does Not Do',
+
+  // Options Explorer
+  optionsFixedTopLine: 'Option B is the first hypothesis to test. No option is chosen. None can be chosen until the four proofs exist and the hard legal, security and commercial gates are passed. Hard gates override any score.',
+  optionsTitle: 'Options Explorer: Five Strategic Paths Kept Open',
+  optionsSubtitle: 'Illustrating five architectural options side-by-side under the research method: four proofs, five options, one gate.',
+  optionsFootnote: 'All five are compared on the same scope and the same time basis. Early screening scores existed in the research, but they are judgement, not evidence, and are deliberately not shown here.',
+  currentStanceLabel: 'Current stance',
+  couldWinLabel: 'It could win if...',
+  wouldStopLabel: 'It would stop if...',
+  demoShowsLabel: 'What this demo shows',
+  whatWouldTestItLabel: 'What would test it',
+  whatCouldChangeTitle: 'What could change the picture',
+  fourProofsTitle: 'Four proofs before any money is spent',
+  fourProofsAppliesTo: 'Applies to all five options',
+  oneGateBarTitle: 'No live pilot, procurement or capital until all four proofs exist.',
+  hardGatesOverride: 'Hard gates override any score.',
+  compareOptions: 'Compare 2 Options',
+  selectOptionPrompt: 'Select option to compare...',
+  walkthroughStart: 'Walk me through it',
+  walkthroughNext: 'Next option',
+  walkthroughPrev: 'Previous',
+  walkthroughClose: 'Close tour (Esc)',
+
+  // Gate stages
+  gateStageScreening: 'Screening',
+  gateStageFeasibility: 'Feasibility gate',
+  gateStageValidation: 'Non-production validation',
+  gateStagePilot: 'Live pilot gate',
+  gateStageScale: 'Scale gate',
+
+  // Conditions
+  condition1: 'If the existing acceptance product is production-efficient and a bank signs for expansion, then C becomes the first option to test.',
+  condition2: 'If the reconciliation problem is already solved at member banks, then B is downgraded.',
+  condition3: 'If a partner\'s total cost beats a build while obligations stay covered, then D becomes the first option to test.',
+  condition4: 'If no bank commits recurring fees and there is no positive contribution, then E becomes the first option to test.',
+  condition5: 'If at least two banks sign common modular economics, then a phased path to A is reconsidered.',
 };

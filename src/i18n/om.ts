@@ -18,6 +18,7 @@ export const omTranslations: Translations = {
   navReports: 'Gabaasaalee',
   navStaff: 'Hojjattoota & Odiitii',
   navAbout: 'Waa\'ee & Daangaa',
+  navOptions: 'Filannoowwan',
 
   // Common
   allTills: 'Galmeessitoota Hunda',
@@ -101,4 +102,40 @@ export const omTranslations: Translations = {
   proof4Title: '4. Qorannoo Nageenyaa fi Dhuunfaa Walaba',
   notStarted: 'Hin eegalle',
   whatIllustrationDoesNotShow: 'Wanta Fakkiisni Kun Gonkumaa Hin Hojjenne',
+
+  // Options Explorer
+  optionsFixedTopLine: 'Filannoon B yaalii duraa qoratamuu dha. Filannoon kamiyyuu hin filatamne. Mirkaneessitoonni afuran utuu hin argamin fi karraan seeraa, nageenyaa fi daldalaa utuu hin darbamin kamiyyuu filatamuu hin danda\'u. Karrawwan jajjaboon bu\'aa kamiyyuu caalu.',
+  optionsTitle: 'Sakatta\'aa Filannoowwanii: Karaalee Tarsiimoo Banaa Ta\'an Shan',
+  optionsSubtitle: 'Mala qorannoo jalatti filannoowwan ijaaramaa shan cinaa cinaan agarsiisuu: mirkaneessitoota afur, filannoowwan shan, karra tokko.',
+  optionsFootnote: 'Shananuu daangaa wal-fakkaataa fi yeroo wal-fakkaataa irratti wal-bira qabamu. Qabxiileen calallii jalqabaa qorannicha keessa turan, garuu isaan murtii malee ragaa miti, ta\'e jedhamee asitti hin agarsiifamne.',
+  currentStanceLabel: 'Dhaabbii ammaa',
+  couldWinLabel: 'Moo\'achuu kan danda\'u...',
+  wouldStopLabel: 'Dhaabbachuu kan danda\'u...',
+  demoShowsLabel: 'Agarsiisni kun kan inni agarsiisu',
+  whatWouldTestItLabel: 'Wanti isa qoru maal',
+  whatCouldChangeTitle: 'Wanti haalicha jijjiiruu danda\'u',
+  fourProofsTitle: 'Maallaqni kamiyyuu baasii ta\'uun dura mirkaneessitoota afur',
+  fourProofsAppliesTo: 'Filannoowwan shanan hundaaf ni hojjeta',
+  oneGateBarTitle: 'Mirkaneessitoonni arfan hundi utuu hin argamin yaaliin kallattii, bittaa ykn kaappitaalli hin jiru.',
+  hardGatesOverride: 'Karrawwan jajjaboon bu\'aa kamiyyuu caalu.',
+  compareOptions: 'Filannoowwan 2 Wal-bira Qabi',
+  selectOptionPrompt: 'Filannoo wal-bira qabamu filadhu...',
+  walkthroughStart: 'Na daawwachiisi',
+  walkthroughNext: 'Filannoo itti-aanu',
+  walkthroughPrev: 'Kan duraa',
+  walkthroughClose: 'Daawwannaa cufi (Esc)',
+
+  // Gate stages
+  gateStageScreening: 'Calallii',
+  gateStageFeasibility: 'Karra dandeettii raawwii',
+  gateStageValidation: 'Mirkaneessa oomishaan alaa',
+  gateStagePilot: 'Karra yaalii kallattii',
+  gateStageScale: 'Karra bal\'isuu',
+
+  // Conditions
+  condition1: 'Oomishni kaffaltii jiru oomisha irratti bu\'a-qabeessa ta\'ee baankiin babal\'inaaf yoo mallatteesse, C filannoo jalqaba qoratamuu ta\'a.',
+  condition2: 'Rakkon araara kaffaltii baankota miseensa biratti duraan kan furame yoo ta\'e, B gadi bu\'a.',
+  condition3: 'Baasiin waliigalaa miiltoo dirqamoonni eegamaa ijaarsa yoo moo\'ate, D filannoo jalqaba qoratamuu ta\'a.',
+  condition4: 'Baankiin kamiyyuu kaffaltii irra-deebii yoo hin committed fi gumaachi gaariin yoo hin jirre, E filannoo jalqaba qoratamuu ta\'a.',
+  condition5: 'Yoo xiqqaate baankonni lama diinagdee moojulaaraa waloo yoo mallatteessan, karaan sadarkaan gara A deemamu deebisamee ilaalama.',
 };

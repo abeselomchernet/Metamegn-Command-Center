@@ -14,6 +14,7 @@ import { Reports } from './pages/Reports';
 import { Staff } from './pages/Staff';
 import { About } from './pages/About';
 import { Tills } from './pages/Tills';
+import { Options } from './pages/Options';
 
 const App: React.FC = () => {
   return (
@@ -31,6 +32,9 @@ const App: React.FC = () => {
 
               {/* Cashier Fast Capture POS Terminal */}
               <Route path="/pos" element={<POS />} />
+
+              {/* Options Explorer (Five Strategic Paths Kept Open) */}
+              <Route path="/options" element={<Options />} />
 
               {/* Shifts & Register Cash Variance */}
               <Route

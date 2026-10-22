@@ -18,6 +18,7 @@ export const amTranslations: Translations = {
   navReports: 'ሪፖርቶች',
   navStaff: 'ሰራተኞች እና ኦዲት',
   navAbout: 'ስለ መተማመኛ እና ወሰን',
+  navOptions: 'አማራጮች',
 
   // Common
   allTills: 'ሁሉም መመዝገቢያዎች',
@@ -101,4 +102,40 @@ export const amTranslations: Translations = {
   proof4Title: '4. ገለልተኛ የደህንነት እና የግላዊነት ግምገማ',
   notStarted: 'አልተጀመረም',
   whatIllustrationDoesNotShow: 'ይህ ማሳያ በፍፁም የማያደርጋቸው ነገሮች',
+
+  // Options Explorer
+  optionsFixedTopLine: 'አማራጭ B ለመፈተሽ የመጀመሪያው መላምት ነው። የትኛውም አማራጭ አልተመረጠም። አራቱ ማረጋገጫዎች እስካልተገኙ እና ጥብቅ የሕግ፣ የደህንነት እና የንግድ በሮች እስካልተላለፉ ድረስ የትኛውም ሊመረጥ አይችልም። ጠንካራ በሮች የትኛውንም ውጤት ይሽራሉ።',
+  optionsTitle: 'የአማራጮች አሳሽ፡ አምስቱ ክፍት የተደረጉ ስትራቴጂካዊ መንገዶች',
+  optionsSubtitle: 'በምርምር ዘዴው ስር አምስቱን የሥነ-ሕንፃ አማራጮች ጎን ለጎን ማሳየት፡ አራት ማረጋገጫዎች፣ አምስት አማራጮች፣ አንድ በር።',
+  optionsFootnote: 'አምስቱም በተመሳሳይ ወሰን እና በተመሳሳይ የጊዜ መሠረት ይነጻጸራሉ። የመጀመሪያ ደረጃ የማጣሪያ ውጤቶች በምርምሩ ውስጥ ነበሩ፣ ነገር ግን እነሱ ፍርድ እንጂ ማስረጃ አይደሉም፣ እና ሆን ተብሎ እዚህ አልታዩም።',
+  currentStanceLabel: 'የአሁን አቋም',
+  couldWinLabel: 'ሊያሸንፍ የሚችለው...',
+  wouldStopLabel: 'ሊቆም የሚችለው...',
+  demoShowsLabel: 'ይህ ማሳያ የሚያሳየው',
+  whatWouldTestItLabel: 'ምን ሊፈትሸው ይችላል',
+  whatCouldChangeTitle: 'ሁኔታውን ምን ሊለውጠው ይችላል',
+  fourProofsTitle: 'ማንኛውም ወጪ ከመደረጉ በፊት አራቱ ማረጋገጫዎች',
+  fourProofsAppliesTo: 'ለሁሉም አምስት አማራጮች ተፈጻሚ ይሆናል',
+  oneGateBarTitle: 'አራቱም ማረጋገጫዎች እስካልተገኙ ድረስ ምንም የቀጥታ ሙከራ፣ ግዥ ወይም ካፒታል አይኖርም።',
+  hardGatesOverride: 'ጠንካራ በሮች የትኛውንም ውጤት ይሽራሉ።',
+  compareOptions: '2 አማራጮችን አወዳድር',
+  selectOptionPrompt: 'የሚነጻጸር አማራጭ ምረጥ...',
+  walkthroughStart: 'አስጎብኘኝ',
+  walkthroughNext: 'ቀጣይ አማራጭ',
+  walkthroughPrev: 'ቀዳሚ',
+  walkthroughClose: 'ጉብኝቱን ዝጋ (Esc)',
+
+  // Gate stages
+  gateStageScreening: 'ማጣራት',
+  gateStageFeasibility: 'የአዋጭነት በር',
+  gateStageValidation: 'ከምርት ውጭ ማረጋገጫ',
+  gateStagePilot: 'የቀጥታ ሙከራ በር',
+  gateStageScale: 'የማስፋፊያ በር',
+
+  // Conditions
+  condition1: 'አሁን ያለው የክፍያ ምርት በምርት ደረጃ ውጤታማ ከሆነ እና ባንክ ለማስፋፊያ ከፈረመ፣ ከዚያ C ለመፈተሽ የመጀመሪያው አማራጭ ይሆናል።',
+  condition2: 'የማስታረቅ ችግሩ በአባል ባንኮች ዘንድ አስቀድሞ ከተፈታ፣ ከዚያ B ዝቅ ይላል።',
+  condition3: 'የአጋር አጠቃላይ ወጪ ግዴታዎች እየተጠበቁ ግንባታን ካሸነፈ፣ ከዚያ D ለመፈተሽ የመጀመሪያው አማራጭ ይሆናል።',
+  condition4: 'ማንኛውም ባንክ ተደጋጋሚ ክፍያዎችን ካልፈቀደ እና አዎንታዊ አስተዋጽኦ ከሌለ፣ ከዚያ E ለመፈተሽ የመጀመሪያው አማራጭ ይሆናል።',
+  condition5: 'ቢያንስ ሁለት ባንኮች የጋራ ሞዱላር ኢኮኖሚክስ ከፈረሙ፣ ከዚያ ወደ A የሚወስደው ደረጃ በደረጃ መንገድ እንደገና ይታሰባል።',
 };

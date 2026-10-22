@@ -18,6 +18,7 @@ export interface Translations {
   navReports: string;
   navStaff: string;
   navAbout: string;
+  navOptions: string;
 
   // Common verbs & terms
   allTills: string;
@@ -101,4 +102,40 @@ export interface Translations {
   proof4Title: string;
   notStarted: string;
   whatIllustrationDoesNotShow: string;
+
+  // Options Explorer
+  optionsFixedTopLine: string;
+  optionsTitle: string;
+  optionsSubtitle: string;
+  optionsFootnote: string;
+  currentStanceLabel: string;
+  couldWinLabel: string;
+  wouldStopLabel: string;
+  demoShowsLabel: string;
+  whatWouldTestItLabel: string;
+  whatCouldChangeTitle: string;
+  fourProofsTitle: string;
+  fourProofsAppliesTo: string;
+  oneGateBarTitle: string;
+  hardGatesOverride: string;
+  compareOptions: string;
+  selectOptionPrompt: string;
+  walkthroughStart: string;
+  walkthroughNext: string;
+  walkthroughPrev: string;
+  walkthroughClose: string;
+
+  // Gate stages
+  gateStageScreening: string;
+  gateStageFeasibility: string;
+  gateStageValidation: string;
+  gateStagePilot: string;
+  gateStageScale: string;
+
+  // Conditions
+  condition1: string;
+  condition2: string;
+  condition3: string;
+  condition4: string;
+  condition5: string;
 }

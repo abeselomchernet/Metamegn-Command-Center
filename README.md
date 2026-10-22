@@ -45,7 +45,7 @@ The system **records events, reconciles reports, and routes exceptions. It does 
 src/
 ├── domain/            # Types, integer minor units (ETB cents), permissions, evidence, 5-class matching
 ├── data/              # EventSourceAdapter interface seam, MockAdapter, Mulberry32 PRNG, offline queue
-├── features/          # capture/ (360px Cashier POS), ledger/, reconcile/, shifts/, reports/, staff/, about/
+├── features/          # capture/ (360px Cashier POS), ledger/, reconcile/, options/, shifts/, reports/, staff/, about/
 ├── ui/                # Layout, UniversalNotice, EvidenceChip, StateViews (empty/loading/error)
 ├── i18n/              # English (default), Amharic, Afaan Oromoo + Noto Sans Ethiopic
 └── app/               # Routes, RouteGuard, and App entry point
@@ -79,7 +79,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ```bash
 npm run test
 ```
-Executes Vitest covering integer money arithmetic, permissions, all five reconciliation matching classes, the capture state machine, and offline queue replay.
+Executes Vitest covering integer money arithmetic, permissions, all five reconciliation matching classes, the capture state machine, offline queue replay, and options explorer invariants.
 
 ### Production Build
 ```bash
@@ -112,6 +112,14 @@ When demonstrating this research illustration to stakeholders, engineers, or eva
    - Demonstrate route guards blocking unauthorized actions.
    - Inspect the immutable audit log recording every event capture, void, and resolution.
 
-5. **Conclude on About & Proof Gates (`/about`)**:
+5. **Review About & Proof Gates (`/about`)**:
    - Walk through the Scope Boundary table.
    - Review the **Four Proof Gates** (Bank buyer, legal permissions, finance acceptance, security review), explaining that all are explicitly marked `Not started`.
+   - Note that the application illustrates Option B of five strategic paths kept open.
+
+6. **If asked about alternatives, show Options Explorer (`/options`)**:
+   - Say: *"The method keeps five options open, including doing nothing new."*
+   - Point out the fixed top notice: *"Option B is the first hypothesis to test. No option is chosen. None can be chosen until the four proofs exist and the hard legal, security and commercial gates are passed. Hard gates override any score."*
+   - Note that Option E (*No new platform*) has identical visual weight and structure to Options A through D.
+   - Demonstrate the equal five-column layout, the two-option mobile compare selector (starts unselected), and the accessible presenter walkthrough (`Esc` to close).
+   - Review the 5-stage gate strip (`Screening`, `Feasibility gate`, `Non-production validation`, `Live pilot gate`, `Scale gate`) and the five pivot condition sentences—all marked with `Assumption` and `Not started` in neutral grey.

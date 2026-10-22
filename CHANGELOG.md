@@ -1,6 +1,29 @@
-# Changelog: Metamegn Command Center v2
+# Changelog: Metamegn Command Center
 
 All notable changes to the Metamegn illustration codebase are documented here.
+
+---
+
+## [3.0.0] - 2026-10-22: Options Explorer & Strategic Methodology
+
+### Added
+- **Options Explorer Screen (`/options`)**:
+  - Side-by-side presentation of five strategic options kept open under the research methodology:
+    - **Option A**: Full suite (staged architecture target only if staged modules pay for themselves)
+    - **Option B**: Operate + Connect first (first hypothesis to test, subject to a paying bank buyer and component reuse)
+    - **Option C**: Existing-product-led (operator extends an existing acceptance product; no real product names used)
+    - **Option D**: Partner-managed (adapter seam illustrates vendor integration; mandatory comparator)
+    - **Option E**: No new platform (equal visual weight and structure; a legitimate outcome, not a failed programme)
+  - **Fixed Notice**: *"Option B is the first hypothesis to test. No option is chosen. None can be chosen until the four proofs exist and the hard legal, security and commercial gates are passed. Hard gates override any score."*
+  - **Equal 5-Column Grid**: Identical card width, layout, and visual weight across all five options with zero scoring, weights, stars, ranking, or winner badges.
+  - **Current Stance & Inquiry Questions**: Structured stance and Assumption-tagged inquiry questions ("What would test it") for each option.
+  - **Direct Option B Links**: Inline navigational links to `/ledger`, `/reconcile`, `/pos`, and `/shifts`; Options A, C, D, and E preserve the brief's exact "What this demo shows" copy.
+  - **Two-Option Mobile Compare Selector**: Allows side-by-side comparison on mobile viewports; starts with no option pre-selected to avoid default bias.
+  - **Presenter Walkthrough Tour**: Fixed-order tour (A through E, plus Proofs & Gate) using uniform neutral outline (`ring-2 ring-slate-800`), keyboard controls (`Escape` to close, Arrow keys to navigate), and screen-reader announcements (`aria-live="polite"`).
+  - **What Could Change the Picture**: Panel with 5 condition sentences detailing triggers that would shift the first-tested option.
+  - **Four Proofs & One Gate**: Four proof cards with status `Not started` in neutral grey, a neutral grey gate bar (*"No live pilot, procurement or capital until all four proofs exist."*), and a 5-stage strip (`Screening` -> `Feasibility gate` -> `Non-production validation` -> `Live pilot gate` -> `Scale gate`), accompanied by *"Hard gates override any score."*
+  - **Complete Multilingual Support**: Translation keys in English (`en`), Amharic (`am`), and Afaan Oromoo (`om`) for all options copy, conditions, gate stages, and tour controls.
+  - **Automated Vitest Suite**: Added `tests/options.test.ts` asserting data structures, non-empty fields, inquiry questions, exact wording for Options D/E/A/C, anti-bias invariants (zero score/rank keys), and cross-language translation parity.
 
 ---
 

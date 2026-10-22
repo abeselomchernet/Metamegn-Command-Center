@@ -7,6 +7,7 @@ import {
   BarChart3,
   Users2,
   Info,
+  Columns3,
   Menu,
   X,
 } from 'lucide-react';
@@ -72,6 +73,12 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       to: '/about',
       label: t.navAbout,
       icon: Info,
+      show: true,
+    },
+    {
+      to: '/options',
+      label: t.navOptions,
+      icon: Columns3,
       show: true,
     },
   ];
